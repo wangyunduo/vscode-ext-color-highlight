@@ -2,7 +2,7 @@
   "name": "color-highlight",
   "displayName": "Color Highlight - Hue show better version",
   "description": "Highlight web colors in your editor, optimized for hsl and hwb formats.",
-  "version": "0.0.1 (2.6.0)",
+  "version": "2.6.0-hue-0.0.1",
   "publisher": "Yunduo",
   "license": "GPL-3.0",
   "engines": {
