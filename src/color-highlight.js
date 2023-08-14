@@ -87,7 +87,7 @@ export class DocumentHighlight {
 
   initialize(viewConfig) {
     this.decorations = new DecorationMap(viewConfig);
-    this.listner = workspace.onDidChangeTextDocument(({ document }) => this.onUpdate(document));
+    this.listener = workspace.onDidChangeTextDocument(({ document }) => this.onUpdate(document));
   }
 
   /**
@@ -160,12 +160,12 @@ export class DocumentHighlight {
   dispose() {
     this.disposed = true;
     this.decorations.dispose();
-    this.listner.dispose();
+    this.listener.dispose();
 
     this.decorations = null;
     this.document = null;
     this.colors = null;
-    this.listner = null;
+    this.listener = null;
   }
 }
 
