@@ -1,9 +1,5 @@
 'use strict';
-import {
-  workspace,
-  window,
-  Range,
-} from 'vscode';
+import { workspace, window, Range } from 'vscode';
 import { findScssVars } from './strategies/scss-vars';
 import { findLessVars } from './strategies/less-vars';
 import { findStylVars } from './strategies/styl-vars';
@@ -19,7 +15,6 @@ import { dirname } from 'path';
 const colorWordsLanguages = ['css', 'scss', 'sass', 'less', 'stylus'];
 
 export class DocumentHighlight {
-
   /**
    * Creates an instance of DocumentHighlight.
    * @param {TextDocument} document
@@ -73,12 +68,14 @@ export class DocumentHighlight {
         break;
       case 'sass':
       case 'scss':
-        this.strategies.push(text => findScssVars(text, {
-          data: text,
-          cwd: dirname(document.uri.fsPath),
-          extensions: ['.scss', '.sass'],
-          includePaths: viewConfig.sass.includePaths || []
-        }));
+        this.strategies.push(text =>
+          findScssVars(text, {
+            data: text,
+            cwd: dirname(document.uri.fsPath),
+            extensions: ['.scss', '.sass'],
+            includePaths: viewConfig.sass.includePaths || [],
+          }),
+        );
         break;
     }
 
@@ -130,18 +127,14 @@ export class DocumentHighlight {
         return false;
       }
 
-      const updateStack = this.decorations.keys()
-        .reduce((state, color) => {
-          state[color] = [];
-          return state;
-        }, {});
+      const updateStack = this.decorations.keys().reduce((state, color) => {
+        state[color] = [];
+        return state;
+      }, {});
 
       for (const color in colorRanges) {
         updateStack[color] = colorRanges[color].map(item => {
-          return new Range(
-            this.document.positionAt(item.start),
-            this.document.positionAt(item.end)
-          );
+          return new Range(this.document.positionAt(item.start), this.document.positionAt(item.end));
         });
       }
 
@@ -170,16 +163,15 @@ export class DocumentHighlight {
 }
 
 function groupByColor(results) {
-  return results
-    .reduce((collection, item) => {
-      if (!collection[item.color]) {
-        collection[item.color] = [];
-      }
+  return results.reduce((collection, item) => {
+    if (!collection[item.color]) {
+      collection[item.color] = [];
+    }
 
-      collection[item.color].push(item);
+    collection[item.color].push(item);
 
-      return collection;
-    }, {});
+    return collection;
+  }, {});
 }
 
 function concatAll(arr) {
