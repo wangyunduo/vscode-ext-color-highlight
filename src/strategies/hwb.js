@@ -1,4 +1,4 @@
-const colorHwb = /((hwb)\(\d+\s+(100|0*\d{1,2})%\s+(100|0*\d{1,2})%(\s*\/\s*0?\.?\d+)?\))/gi;
+import hwbPattern from './regexPatterns/hwbPattern.mjs';
 
 /**
  * @export
@@ -10,13 +10,14 @@ const colorHwb = /((hwb)\(\d+\s+(100|0*\d{1,2})%\s+(100|0*\d{1,2})%(\s*\/\s*0?\.
  * }}
  */
 export async function findHwb(text) {
-  let match = colorHwb.exec(text);
+  let match = hwbPattern.exec(text);
   let result = [];
 
   while (match !== null) {
     const start = match.index;
-    const end = colorHwb.lastIndex;
+    const end = hwbPattern.lastIndex;
     const color = match[0];
+    console.log('🚀 ~ file: hwb.js:21 ~ findHwb ~ color:', color);
 
     result.push({
       start,
@@ -24,7 +25,7 @@ export async function findHwb(text) {
       color,
     });
 
-    match = colorHwb.exec(text);
+    match = hwbPattern.exec(text);
   }
 
   return result;
