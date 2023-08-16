@@ -1,6 +1,6 @@
 'use strict';
 import vscode from 'vscode';
-import { getColorContrast } from './dynamic-contrast';
+import { getColorContrast, getTextBackgroundColor } from './dynamic-contrast';
 
 /**
  *
@@ -9,7 +9,8 @@ import { getColorContrast } from './dynamic-contrast';
  *
  * @property {{
  *  markRuler: boolean,
- *  markerType: string
+ *  markerType: string,
+ *  markerBackground: string
  * }} options
  */
 export class DecorationMap {
@@ -17,7 +18,8 @@ export class DecorationMap {
    * Creates an instance of DecorationMap.
    * @param {{
    *  markRuler: boolean,
-   *  markerType: string
+   *  markerType: string,
+   *  markerBackground: string
    * }} options
    *
    * @memberOf DecorationMap
@@ -78,7 +80,7 @@ export class DecorationMap {
           break;
         case 'background':
         default:
-          rules.backgroundColor = color;
+          rules.backgroundColor = getTextBackgroundColor(this.options.markerBackground, color);
           rules.color = getColorContrast(color);
           rules.border = `3px solid ${color}`;
           rules.borderRadius = '3px';

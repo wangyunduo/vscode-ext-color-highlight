@@ -155,3 +155,28 @@ const srgb8ToLinear = (function () {
     return srgbLookupTable[index];
   };
 })();
+
+/**
+ * * As of August 16, 2023,
+ * * it is not possible to programmatically access the theme colors
+ * * https://github.com/microsoft/vscode/issues/32813#
+ * Code for getting customized editor background:
+ * const customizationEditorBackground = vscode.workspace.getConfiguration()
+ *   .get('workbench.colorCustomizations')['editor.background'];
+ *
+ * In order to stably display readable text on colored backgrounds
+ * with alpha values other than 1 (i.e. transparent backgrounds),
+ * it is necessary to specify a background color for such colors.
+ * The default value is #ffffff, i.e. white.
+ * @param  color
+ * @return textBackgroundColor
+ */
+export function getTextBackgroundColor(markerBackground, color) {
+  console.log(
+    '🚀 ~ file: dynamic-contrast.js:175 ~ getTextBackgroundColor ~ markerBackground, color:',
+    markerBackground,
+    color,
+  );
+  let textBackgroundColor = color;
+  return textBackgroundColor;
+}
