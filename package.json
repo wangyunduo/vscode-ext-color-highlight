@@ -98,6 +98,12 @@
           "default": [],
           "description": "Array of absolute paths to search while perform file lookups.",
           "type": "array"
+        },
+        "color-highlight.markerBackground": {
+          "default": "#ffffff",
+          "pattern": "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$",
+          "description": "Background color for highlighting colors with alpha value less than 1. Use #RGB, #RGBA, #RRGGBB or #RRGGBBAA.",
+          "type": "string"
         }
       }
     },
