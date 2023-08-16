@@ -12,11 +12,14 @@
 import webColors from 'color-name';
 
 export function getColorContrast(color) {
-  const rgbExp = /^rgba?[\s+]?\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*(?:,\s*([\d.]+)\s*)?\)/im,
-    hexExp = /^(?:#)|([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/igm;
+  const rgbExp =
+      /^rgba?[\s+]?\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*(?:,\s*([\d.]+)\s*)?\)/im,
+    hexExp = /^(?:#)|([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$/gim;
   let rgb = color.match(rgbExp),
     hex = color.match(hexExp),
-    r, g, b;
+    r,
+    g,
+    b;
   if (rgb) {
     r = parseInt(rgb[1], 10);
     g = parseInt(rgb[2], 10);
@@ -135,16 +138,14 @@ function relativeLuminance(r8, g8, b8) {
  * @returns  number  The value of the channel in a linear RGB color space -- a
  *                   number between 0.0 and 1.0, inclusive.
  */
-const srgb8ToLinear = (function() {
+const srgb8ToLinear = (function () {
   // There are only 256 possible different input values (0 <= input <= 255),
   // so we just use a lookup table, which to avoid repeating the (somewhat
   // costly) computation 3 times for each input.
   const srgbLookupTable = new Float64Array(256);
   for (let i = 0; i < 256; ++i) {
     const c = i / 255.0;
-    srgbLookupTable[i] = (c <= 0.04045)
-      ? c / 12.92
-      : Math.pow((c + 0.055) / 1.055, 2.4);
+    srgbLookupTable[i] = c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
   }
 
   return function srgb8ToLinear(c8) {
@@ -153,4 +154,4 @@ const srgb8ToLinear = (function() {
     const index = Math.min(Math.max(c8, 0), 255) & 0xff;
     return srgbLookupTable[index];
   };
-}());
+})();
