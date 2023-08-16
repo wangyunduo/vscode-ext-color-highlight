@@ -37,7 +37,7 @@ export class DecorationMap {
       let rules = {};
       if (this.options.markRuler) {
         rules = {
-          overviewRulerColor: color
+          overviewRulerColor: color,
         };
       }
 
@@ -61,7 +61,7 @@ export class DecorationMap {
             width: '0.7em',
             height: '0.7em',
             backgroundColor: color,
-            borderRadius: '50%'
+            borderRadius: '50%',
           };
           break;
         case 'dotbefore':
@@ -73,7 +73,7 @@ export class DecorationMap {
             width: '0.7em',
             height: '0.7em',
             backgroundColor: color,
-            borderRadius: '50%'
+            borderRadius: '50%',
           };
           break;
         case 'background':
@@ -89,13 +89,12 @@ export class DecorationMap {
     return this._map.get(color);
   }
 
-
   keys() {
     return this._keys.slice();
   }
 
   dispose() {
-    this._map.forEach((decoration) => {
+    this._map.forEach(decoration => {
       decoration.dispose();
     });
   }
