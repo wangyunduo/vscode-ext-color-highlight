@@ -17,7 +17,6 @@ export async function findHwb(text) {
     const start = match.index;
     const end = hwbPattern.lastIndex;
     const color = match[0];
-    console.log('🚀 ~ file: hwb.js:21 ~ findHwb ~ color:', color);
 
     result.push({
       start,
