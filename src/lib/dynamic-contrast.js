@@ -10,6 +10,7 @@
 //                         blue, green, red
 // @return      string of the form #RRGGBB
 import webColors from 'color-name';
+import { ColorTranslator } from 'colortranslator';
 
 export function getColorContrast(color) {
   const rgbExp =
@@ -168,15 +169,60 @@ const srgb8ToLinear = (function () {
  * with alpha values other than 1 (i.e. transparent backgrounds),
  * it is necessary to specify a background color for such colors.
  * The default value is #ffffff, i.e. white.
- * @param  color
- * @return textBackgroundColor
+ * @param  {string} markerBackground
+ * @param  {string} color
+ * @return {string}
  */
 export function getTextBackgroundColor(markerBackground, color) {
-  console.log(
-    '🚀 ~ file: dynamic-contrast.js:175 ~ getTextBackgroundColor ~ markerBackground, color:',
-    markerBackground,
-    color,
-  );
-  let textBackgroundColor = color;
-  return textBackgroundColor;
+  /**
+   * * use npm package colortranslator to translate color
+   * * support color keyword, #RGB, #RGBA #RRGGBB, #RRGGBBAA, rgb(), hsl()
+   * ! not supported
+   *   * hwb()
+   *   * scientific notation
+   *   * `none` expression
+   */
+  try {
+    return blendTwoColors(new ColorTranslator(markerBackground), new ColorTranslator(color)).RGBA;
+  } catch (error) {
+    console.log(markerBackground, color);
+    /**
+     * for hwb() color
+     */
+  }
+
+  return color;
+}
+
+/**
+ *
+ * @param {ColorTranslator} bottomColor
+ * @param {ColorTranslator} topColor
+ * @returns {ColorTranslator}
+ */
+function blendTwoColors(bottomColor, topColor) {
+  try {
+    const blendedColor = new ColorTranslator({
+      r: topColor.R,
+      g: topColor.G,
+      b: topColor.B,
+      a: topColor.A + (1 - topColor.A) * bottomColor.A,
+    });
+
+    if (blendedColor.A === 0) {
+      return blendedColor;
+    }
+
+    blendedColor.setR(blendTwoColorProps(bottomColor.R, bottomColor.A, topColor.R, topColor.A, blendedColor.A));
+    blendedColor.setG(blendTwoColorProps(bottomColor.G, bottomColor.A, topColor.G, topColor.A, blendedColor.A));
+    blendedColor.setB(blendTwoColorProps(bottomColor.B, bottomColor.A, topColor.B, topColor.A, blendedColor.A));
+
+    return blendedColor;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function blendTwoColorProps(bottomRGB, bottomAlpha, topRGB, topAlpha, blendedAlpha) {
+  return (topRGB * topAlpha + bottomRGB * bottomAlpha * (1 - topAlpha)) / blendedAlpha;
 }
