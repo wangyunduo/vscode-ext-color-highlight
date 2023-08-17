@@ -174,6 +174,10 @@ const srgb8ToLinear = (function () {
  * @return {string}
  */
 export function getTextBackgroundColor(markerBackground, color) {
+  if (markerBackground === 'none') {
+    return color;
+  }
+
   /**
    * * use npm package colortranslator to translate color
    * * support color keyword, #RGB, #RGBA #RRGGBB, #RRGGBBAA, rgb(), hsl()
