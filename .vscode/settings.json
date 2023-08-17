@@ -3,4 +3,5 @@
   "editor.tabSize": 2,
   "color-highlight.enable": true,
   "eslint.enable": true,
+  "cSpell.words": ["colortranslator", "RGBA", "RRGGBB", "RRGGBBAA"]
 }
