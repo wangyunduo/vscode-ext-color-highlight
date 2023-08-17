@@ -1,6 +1,6 @@
 'use strict';
 import vscode from 'vscode';
-import { getColorContrast, getTextBackgroundColor } from './dynamic-contrast';
+import { getColorContrast, getTextBackgroundColor } from './decoration-lib';
 
 /**
  *
