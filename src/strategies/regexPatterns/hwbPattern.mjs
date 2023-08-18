@@ -26,7 +26,7 @@ import { numberPattern, anglePattern, percentagePattern, alphaValuePattern } fro
 const huePattern = new RegExp(`(${numberPattern.source}|${anglePattern.source})`);
 
 const hwbPattern = new RegExp(
-  `hwb\\(\\s*(${huePattern.source}|none)\\s+(${percentagePattern.source}|none )\\s*(${percentagePattern.source}|none)\\s*(\\/\\s*(${alphaValuePattern.source}|none))?\\s*\\)`,
+  `hwb\\(\\s*(?<h>${huePattern.source}|none)\\s+(?<w>${percentagePattern.source}|none )\\s*(?<b>${percentagePattern.source}|none)\\s*(\\/\\s*(?<a>${alphaValuePattern.source}|none))?\\s*\\)`,
   'gi',
 );
 
