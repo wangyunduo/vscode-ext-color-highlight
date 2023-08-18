@@ -32,5 +32,8 @@
   color: hwb(360 0% 0%);
 }
 .red {
-  color: hwb(360 0% 0% / 1);
+  color: hwb(0 0% 0% / 1);
+}
+.test {
+  color: hwb(0.2turn 12% 39% / 30%);
 }
