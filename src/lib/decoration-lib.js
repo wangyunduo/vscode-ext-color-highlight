@@ -13,6 +13,68 @@ import webColors from 'color-name';
 import { ColorTranslator } from 'colortranslator';
 import hwbPattern from '../strategies/regexPatterns/hwbPattern.mjs';
 
+/**
+ * * As of August 16, 2023,
+ * * it is not possible to programmatically access the theme colors
+ * * https://github.com/microsoft/vscode/issues/32813#
+ *   Code for getting customized editor background:
+ *   const customizationEditorBackground = vscode.workspace.getConfiguration()
+ *     .get('workbench.colorCustomizations')['editor.background'];
+ *
+ * * In order to stably display readable text on colored backgrounds
+ * * with alpha values other than 1 (i.e. transparent backgrounds),
+ * * it is necessary to specify a background color for such colors.
+ * * The default value is #ffffff, i.e. white.
+ * @param  {string} markerBackground
+ * @param  {string} color
+ * @return {string}
+ */
+export function getTextBackgroundColor(markerBackground, color) {
+  if (markerBackground === 'none') {
+    return color;
+  }
+
+  /**
+   * * use npm package colortranslator to translate color
+   * * support color keyword, #RGB, #RGBA #RRGGBB, #RRGGBBAA, rgb(), hsl()
+   * ! not supported
+   *   * hwb()
+   *   * scientific notation
+   *   * `none` expression
+   */
+  try {
+    const topColor = new ColorTranslator(color);
+    // * blend only if the top color has transparency
+    if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
+    else return color;
+  } catch (error) {
+    /**
+     * ! should not use 'g'(global) flag
+     * * refer to https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
+     */
+    const hwbPatternSingle = new RegExp(hwbPattern, 'i');
+    const hwbMatch = hwbPatternSingle.exec(color);
+    if (hwbMatch) {
+      const hwbColor = {};
+      hwbColor.h = getHue(hwbMatch);
+      hwbColor.w = getWBValueInHWB(hwbMatch.groups.w);
+      hwbColor.b = getWBValueInHWB(hwbMatch.groups.b);
+      hwbColor.a = getAlphaValue(hwbMatch.groups.a);
+      // console.log(hwbColor);
+
+      const topColor = hwbToRgb(hwbColor);
+      // console.log(topColor.HEXA);
+
+      if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
+      else return color;
+    } else {
+      console.log(markerBackground, color);
+    }
+  }
+
+  return color;
+}
+
 export function getColorContrast(color) {
   const rgbExp =
       /^rgba?[\s+]?\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*(?:,\s*([\d.]+)\s*)?\)/im,
@@ -157,68 +219,6 @@ const srgb8ToLinear = (function () {
     return srgbLookupTable[index];
   };
 })();
-
-/**
- * * As of August 16, 2023,
- * * it is not possible to programmatically access the theme colors
- * * https://github.com/microsoft/vscode/issues/32813#
- * Code for getting customized editor background:
- * const customizationEditorBackground = vscode.workspace.getConfiguration()
- *   .get('workbench.colorCustomizations')['editor.background'];
- *
- * In order to stably display readable text on colored backgrounds
- * with alpha values other than 1 (i.e. transparent backgrounds),
- * it is necessary to specify a background color for such colors.
- * The default value is #ffffff, i.e. white.
- * @param  {string} markerBackground
- * @param  {string} color
- * @return {string}
- */
-export function getTextBackgroundColor(markerBackground, color) {
-  if (markerBackground === 'none') {
-    return color;
-  }
-
-  /**
-   * * use npm package colortranslator to translate color
-   * * support color keyword, #RGB, #RGBA #RRGGBB, #RRGGBBAA, rgb(), hsl()
-   * ! not supported
-   *   * hwb()
-   *   * scientific notation
-   *   * `none` expression
-   */
-  try {
-    const topColor = new ColorTranslator(color);
-    // * blend only if the top color has transparency
-    if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
-    else return color;
-  } catch (error) {
-    /**
-     * ! should not use 'g'(global) flag
-     * * refer to https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
-     */
-    const hwbPatternSingle = new RegExp(hwbPattern, 'i');
-    const hwbMatch = hwbPatternSingle.exec(color);
-    if (hwbMatch) {
-      const hwbColor = {};
-      hwbColor.h = getHue(hwbMatch);
-      hwbColor.w = getWBValueInHWB(hwbMatch.groups.w);
-      hwbColor.b = getWBValueInHWB(hwbMatch.groups.b);
-      hwbColor.a = getAlphaValue(hwbMatch.groups.a);
-      // console.log(hwbColor);
-
-      const topColor = hwbToRgb(hwbColor);
-      // console.log(topColor.HEXA);
-
-      if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
-      else return color;
-    } else {
-      console.log(markerBackground, color);
-    }
-  }
-
-  return color;
-}
 
 /**
  *
