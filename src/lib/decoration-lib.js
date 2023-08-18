@@ -15,16 +15,17 @@ import hwbPattern from '../strategies/regexPatterns/hwbPattern.mjs';
 
 /**
  * * As of August 16, 2023,
- * * it is not possible to programmatically access the theme colors
- * * https://github.com/microsoft/vscode/issues/32813#
- *   Code for getting customized editor background:
+ *   it is not possible to programmatically access the theme colors
+ *   https://github.com/microsoft/vscode/issues/32813#
+ * * Code for getting customized editor background:
+ *   ```
  *   const customizationEditorBackground = vscode.workspace.getConfiguration()
  *     .get('workbench.colorCustomizations')['editor.background'];
- *
+ *   ```
  * * In order to stably display readable text on colored backgrounds
- * * with alpha values other than 1 (i.e. transparent backgrounds),
- * * it is necessary to specify a background color for such colors.
- * * The default value is #ffffff, i.e. white.
+ *   with alpha values other than 1 (i.e. transparent backgrounds),
+ *   it is necessary to specify a background color for such colors.
+ *   The default value is #ffffff, i.e. white.
  * @param  {string} markerBackground
  * @param  {string} color
  * @return {string}
@@ -75,6 +76,11 @@ export function getTextBackgroundColor(markerBackground, color) {
   return color;
 }
 
+/**
+ *
+ * @param {string} color
+ * @returns
+ */
 export function getColorContrast(color) {
   const rgbExp =
       /^rgba?[\s+]?\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*(?:,\s*([\d.]+)\s*)?\)/im,
