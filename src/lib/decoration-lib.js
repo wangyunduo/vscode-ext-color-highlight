@@ -187,7 +187,10 @@ export function getTextBackgroundColor(markerBackground, color) {
    *   * `none` expression
    */
   try {
-    return blendTwoColors(new ColorTranslator(markerBackground), new ColorTranslator(color)).RGBA;
+    const topColor = new ColorTranslator(color);
+    // * blend only if the top color has transparency
+    if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
+    else return color;
   } catch (error) {
     console.log(markerBackground, color);
     /**
