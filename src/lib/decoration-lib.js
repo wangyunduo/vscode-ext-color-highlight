@@ -11,6 +11,7 @@
 // @return      string of the form #RRGGBB
 import webColors from 'color-name';
 import { ColorTranslator } from 'colortranslator';
+import hwbPattern from '../strategies/regexPatterns/hwbPattern.mjs';
 
 export function getColorContrast(color) {
   const rgbExp =
@@ -192,10 +193,28 @@ export function getTextBackgroundColor(markerBackground, color) {
     if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
     else return color;
   } catch (error) {
-    console.log(markerBackground, color);
     /**
-     * for hwb() color
+     * ! should not use 'g'(global) flag
+     * * refer to https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
      */
+    const hwbPatternSingle = new RegExp(hwbPattern, 'i');
+    const hwbMatch = hwbPatternSingle.exec(color);
+    if (hwbMatch) {
+      const hwbColor = {};
+      hwbColor.h = getHue(hwbMatch);
+      hwbColor.w = getWBValueInHWB(hwbMatch.groups.w);
+      hwbColor.b = getWBValueInHWB(hwbMatch.groups.b);
+      hwbColor.a = getAlphaValue(hwbMatch.groups.a);
+      // console.log(hwbColor);
+
+      const topColor = hwbToRgb(hwbColor);
+      // console.log(topColor.HEXA);
+
+      if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
+      else return color;
+    } else {
+      console.log(markerBackground, color);
+    }
   }
 
   return color;
@@ -232,4 +251,84 @@ function blendTwoColors(bottomColor, topColor) {
 
 function blendTwoColorProps(bottomRGB, bottomAlpha, topRGB, topAlpha, blendedAlpha) {
   return (topRGB * topAlpha + bottomRGB * bottomAlpha * (1 - topAlpha)) / blendedAlpha;
+}
+
+/**
+ *
+ * @param {RegExpExecArray} colorMatch
+ */
+function getHue(colorMatch) {
+  if (colorMatch.groups.angleNumber !== undefined) {
+    return Number(colorMatch.groups.angleNumber) + colorMatch.groups.angleUnit;
+  } else {
+    return Number(colorMatch.groups.h);
+  }
+}
+
+function getAlphaValue(alpha) {
+  if (alpha === undefined) return 1;
+
+  if (alpha.trim().toLowerCase() === 'none') {
+    return 0;
+  } else {
+    let value = 0;
+
+    if (alpha.trim().endsWith('%')) {
+      value = Number(alpha.replace('%', '')) / 100;
+    } else value = Number(alpha);
+
+    // * alpha greater than 1 is truncated to 1
+    if (value > 1) return 1;
+    else return value;
+  }
+}
+
+/**
+ * @param {string} value -  Whiteness or Blackness as percentage in string
+ * @return {number} Whiteness or Blackness as percentage 0..1
+ */
+function getWBValueInHWB(percentage) {
+  if (percentage.trim().toLowerCase() === 'none') {
+    return 0;
+  } else {
+    let value = Number(percentage.replace('%', ''));
+    // * Whiteness or Blackness greater than 100% is truncated to 100%
+    if (value > 100) return 1;
+    return value / 100;
+  }
+}
+
+/**
+ * * refer to https://www.w3.org/TR/css-color-4/#hwb-to-rgb
+ *   It returns an array of three numbers representing
+ *   the red, green, and blue channels of the colors,
+ * * normalized to the range [0, 1].
+ * * here multiply by 255
+ *
+ * @param {{
+ *  h: string | number;
+ *  w: number;
+ *  b: number;
+ *  a: number;
+ * }} hwbColor
+ * @returns {ColorTranslator} RGB 0..255
+ */
+function hwbToRgb(hwbColor) {
+  // * `w+b` greater than 100% scales proportionally
+  if (hwbColor.w + hwbColor.b >= 1) {
+    let gray = (hwbColor.w / (hwbColor.w + hwbColor.b)) * 255;
+    return new ColorTranslator({ r: gray, g: gray, b: gray, a: hwbColor.a });
+  }
+
+  let hsla = new ColorTranslator({ h: hwbColor.h, s: 100, l: 50, a: hwbColor.a });
+
+  hsla.setR(hwbToRgbProps(hsla.R, hwbColor));
+  hsla.setG(hwbToRgbProps(hsla.G, hwbColor));
+  hsla.setB(hwbToRgbProps(hsla.B, hwbColor));
+
+  return hsla;
+}
+
+function hwbToRgbProps(valueInRgb, hwbColor) {
+  return valueInRgb * (1 - hwbColor.w - hwbColor.b) + hwbColor.w * 255;
 }
