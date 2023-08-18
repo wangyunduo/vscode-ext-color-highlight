@@ -1,6 +1,6 @@
 'use strict';
 import vscode from 'vscode';
-import { getColorContrast, getTextBackgroundColor } from './decoration-lib';
+import { getTextColor, getTextBackgroundColor } from './decoration-lib';
 
 /**
  *
@@ -81,7 +81,7 @@ export class DecorationMap {
         case 'background':
         default:
           rules.backgroundColor = getTextBackgroundColor(this.options.markerBackground, color);
-          rules.color = getColorContrast(color);
+          rules.color = getTextColor(rules.backgroundColor);
           rules.border = `3px solid ${color}`;
           rules.borderRadius = '3px';
       }
