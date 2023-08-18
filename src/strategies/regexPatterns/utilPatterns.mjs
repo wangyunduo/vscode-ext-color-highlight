@@ -15,7 +15,9 @@ export const numberPattern = /[+-]?(\d+(\.\d+)?|\.\d+)([eE][-+]?\d+)?/;
  * * <angle-units> = [deg | grad | rad | turn]
  */
 const angleUnitsPattern = /(deg|grad|rad|turn)/;
-export const anglePattern = new RegExp(`${numberPattern.source}${angleUnitsPattern.source}`);
+export const anglePattern = new RegExp(
+  `(?<angleNumber>${numberPattern.source})(?<angleUnit>${angleUnitsPattern.source})`,
+);
 
 /**
  * * percentage
