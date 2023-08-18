@@ -45,29 +45,11 @@ export function getTextBackgroundColor(markerBackground, color) {
    */
   try {
     const topColor = new ColorTranslator(color);
-    // * blend only if the top color has transparency
-    if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
-    else return color;
+    return textBackgroundColor(markerBackground, topColor, color);
   } catch (error) {
-    /**
-     * ! should not use 'g'(global) flag
-     * * refer to https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
-     */
-    const hwbPatternSingle = new RegExp(hwbPattern, 'i');
-    const hwbMatch = hwbPatternSingle.exec(color);
-    if (hwbMatch) {
-      const hwbColor = {};
-      hwbColor.h = getHue(hwbMatch);
-      hwbColor.w = getWBValueInHWB(hwbMatch.groups.w);
-      hwbColor.b = getWBValueInHWB(hwbMatch.groups.b);
-      hwbColor.a = getAlphaValue(hwbMatch.groups.a);
-      // console.log(hwbColor);
-
-      const topColor = hwbToRgb(hwbColor);
-      // console.log(topColor.HEXA);
-
-      if (topColor.A < 1) return blendTwoColors(new ColorTranslator(markerBackground), topColor).RGBA;
-      else return color;
+    const topColor = getHWBColor(color);
+    if (topColor !== undefined) {
+      return textBackgroundColor(markerBackground, topColor, color);
     } else {
       console.log(markerBackground, color);
     }
@@ -227,6 +209,27 @@ const srgb8ToLinear = (function () {
 })();
 
 /**
+ * * Blends only if the `topColor` has transparency,
+ *   otherwise returns the `color` string as is.
+ *
+ * @param {string} markerBackground
+ * @param {ColorTranslator} topColor
+ * @param {string} color
+ * @returns {string} - text background color string
+ */
+function textBackgroundColor(markerBackground, topColor, color) {
+  if (topColor.A < 1) {
+    try {
+      const bottomColor = new ColorTranslator(markerBackground);
+      return blendTwoColors(bottomColor, topColor).RGBA;
+    } catch {
+      // console.log('wrong markerBackground');
+      return color;
+    }
+  } else return color;
+}
+
+/**
  *
  * @param {ColorTranslator} bottomColor
  * @param {ColorTranslator} topColor
@@ -257,6 +260,33 @@ function blendTwoColors(bottomColor, topColor) {
 
 function blendTwoColorProps(bottomRGB, bottomAlpha, topRGB, topAlpha, blendedAlpha) {
   return (topRGB * topAlpha + bottomRGB * bottomAlpha * (1 - topAlpha)) / blendedAlpha;
+}
+
+/**
+ * get hwb color from `color` string
+ *
+ * @param {string} color
+ * @returns {ColorTranslator}
+ */
+function getHWBColor(color) {
+  /**
+   * ! should not use 'g'(global) flag
+   * * refer to https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
+   */
+  const hwbPatternSingle = new RegExp(hwbPattern, 'i');
+  const hwbMatch = hwbPatternSingle.exec(color);
+  if (hwbMatch) {
+    const hwbColor = {};
+    hwbColor.h = getHue(hwbMatch);
+    hwbColor.w = getWBValueInHWB(hwbMatch.groups.w);
+    hwbColor.b = getWBValueInHWB(hwbMatch.groups.b);
+    hwbColor.a = getAlphaValue(hwbMatch.groups.a);
+    // console.log(hwbColor);
+
+    return hwbToRgb(hwbColor);
+  } else {
+    return undefined;
+  }
 }
 
 /**
@@ -332,6 +362,7 @@ function hwbToRgb(hwbColor) {
   hsla.setG(hwbToRgbProps(hsla.G, hwbColor));
   hsla.setB(hwbToRgbProps(hsla.B, hwbColor));
 
+  // console.log(hsla.HEXA);
   return hsla;
 }
 
