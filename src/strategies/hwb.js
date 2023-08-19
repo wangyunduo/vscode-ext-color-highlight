@@ -10,12 +10,13 @@ import hwbPattern from './regexPatterns/hwbPattern.mjs';
  * }}
  */
 export async function findHwb(text) {
-  let match = hwbPattern.exec(text);
+  const hwbPatternGlobal = new RegExp(hwbPattern, 'gi');
+  let match = hwbPatternGlobal.exec(text);
   let result = [];
 
   while (match !== null) {
     const start = match.index;
-    const end = hwbPattern.lastIndex;
+    const end = hwbPatternGlobal.lastIndex;
     const color = match[0];
 
     result.push({
@@ -24,7 +25,7 @@ export async function findHwb(text) {
       color,
     });
 
-    match = hwbPattern.exec(text);
+    match = hwbPatternGlobal.exec(text);
   }
 
   return result;

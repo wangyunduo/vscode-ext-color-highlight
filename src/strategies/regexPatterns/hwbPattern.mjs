@@ -25,7 +25,7 @@ import { huePattern, percentagePattern, alphaValuePattern } from './utilPatterns
 
 const hwbPattern = new RegExp(
   `hwb\\(\\s*(?<h>${huePattern.source}|none)\\s+(?<w>${percentagePattern.source}|none )\\s*(?<b>${percentagePattern.source}|none)\\s*(\\/\\s*(?<a>${alphaValuePattern.source}|none))?\\s*\\)`,
-  'gi',
+  'i',
 );
 
 export default hwbPattern;
