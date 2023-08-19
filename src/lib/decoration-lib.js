@@ -288,7 +288,9 @@ function getAlphaValue(alpha) {
 
     // * alpha greater than 1 is truncated to 1
     if (value > 1) return 1;
-    else return value;
+    if (value < 0) return 0;
+
+    return value;
   }
 }
 
@@ -303,6 +305,8 @@ function getWBValueInHWB(percentage) {
     let value = Number(percentage.replace('%', ''));
     // * Whiteness or Blackness greater than 100% is truncated to 100%
     if (value > 100) return 1;
+    if (value < 0) return 0;
+
     return value / 100;
   }
 }
