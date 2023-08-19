@@ -21,9 +21,7 @@
  *
  */
 
-import { numberPattern, anglePattern, percentagePattern, alphaValuePattern } from './utilPatterns.mjs';
-
-const huePattern = new RegExp(`(${numberPattern.source}|${anglePattern.source})`);
+import { huePattern, percentagePattern, alphaValuePattern } from './utilPatterns.mjs';
 
 const hwbPattern = new RegExp(
   `hwb\\(\\s*(?<h>${huePattern.source}|none)\\s+(?<w>${percentagePattern.source}|none )\\s*(?<b>${percentagePattern.source}|none)\\s*(\\/\\s*(?<a>${alphaValuePattern.source}|none))?\\s*\\)`,

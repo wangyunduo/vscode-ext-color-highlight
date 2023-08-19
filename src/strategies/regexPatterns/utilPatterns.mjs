@@ -20,6 +20,13 @@ export const anglePattern = new RegExp(
 );
 
 /**
+ * * Hue
+ *     is represented as an angle of the color circle
+ * * <hue> = <number> | <angle>
+ */
+export const huePattern = new RegExp(`(${numberPattern.source}|${anglePattern.source})`);
+
+/**
  * * percentage
  *     consists of a number immediately followed by a percent sign '%'.
  *     percentage corresponds to the <percentage-token> production
