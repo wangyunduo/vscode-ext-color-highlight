@@ -1,6 +1,6 @@
 import { findHexRGBA } from './hex';
 import { findWords } from './words';
-import { hwbPattern, hslLvl4Pattern } from './regexPatterns/colorPatterns.mjs';
+import { hslLvl4Pattern, hslLegacyPattern, hwbPattern } from './regexPatterns/colorPatterns.mjs';
 
 const colorFunctions =
   /((rgb|hsl)a?\(\s*[\d]{1,3}%?\s*(?<commaOrSpace>\s|,)\s*[\d]{1,3}%?\s*\k<commaOrSpace>\s*[\d]{1,3}%?(\s*(\k<commaOrSpace>|\/)\s*\d?\.?\d+%?)?\s*\))/gi;
@@ -48,15 +48,22 @@ export function sortStringsDesc(arr) {
 }
 
 export function getColorFinders() {
-  return [text => find('hwb', text), text => find('hsl', text)];
+  return [text => find(hslLvl4Pattern, text), text => find(hslLegacyPattern, text), text => find(hwbPattern, text)];
 }
 
-export function findColors(value) {
-  return [findHexRGBA(value), findWords(value), findFn(value), find('hwb', value)];
+export function findColors(text) {
+  return [
+    findHexRGBA(text),
+    findWords(text),
+    findFn(text),
+    find(hslLvl4Pattern, text),
+    find(hslLegacyPattern, text),
+    find(hwbPattern, text),
+  ];
 }
 
 /**
- * @param {string} patternName
+ * @param {RegExp} pattern
  * @param {string} text
  * @returns {{
  *  start: number,
@@ -64,19 +71,8 @@ export function findColors(value) {
  *  color: string
  * }}
  */
-async function find(patternName, text) {
-  let regExp;
-  switch (patternName) {
-    case 'hsl': {
-      regExp = new RegExp(hslLvl4Pattern, 'gi');
-      break;
-    }
-    case 'hwb': {
-      regExp = new RegExp(hwbPattern, 'gi');
-      break;
-    }
-  }
-
+async function find(pattern, text) {
+  const regExp = new RegExp(pattern, 'gi');
   let match = regExp.exec(text);
   let result = [];
 
