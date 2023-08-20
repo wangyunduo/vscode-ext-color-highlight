@@ -45,6 +45,10 @@ export function sortStringsDesc(arr) {
   });
 }
 
+export function getColorFinders() {
+  return [text => find('hwb', text), text => find('hsl', text)];
+}
+
 /**
  * @exports
  * @param {string} patternName
