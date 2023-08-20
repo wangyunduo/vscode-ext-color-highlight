@@ -39,3 +39,18 @@ export const hslLvl4Pattern = new RegExp(
   `hsla?\\(\\s*(?<h>${huePattern.source}|none)\\s+(?<s>${percentagePattern.source}|none )\\s*(?<l>${percentagePattern.source}|none)\\s*(\\/\\s*(?<a>${alphaValuePattern.source}|none))?\\s*\\)`,
   'i',
 );
+
+/**
+ * * Regular pattern for CSS legacy color syntax - `hsl()` function
+ * ```
+ *   hsl() = hsl( <hue>, <percentage>, <percentage>, <alpha-value>? )
+ * ```
+ * * Legacy color syntax `hsla()` also exists,
+ *   with an identical grammar and behavior to `hsl()`.
+ *
+ * https://www.w3.org/TR/css-color-4/#the-hsl-notation
+ */
+export const hslLegacyPattern = new RegExp(
+  `hsla?\\(\\s*(?<h>${huePattern.source})\\s*,\\s*(?<s>${percentagePattern.source})\\s*,\\s*(?<l>${percentagePattern.source})\\s*(,\\s*(?<a>${alphaValuePattern.source}))?\\s*\\)`,
+  'i',
+);
