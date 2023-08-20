@@ -1,5 +1,5 @@
 import { ColorTranslator } from 'colortranslator';
-import { hwbPattern, hslPattern } from '../strategies/regexPatterns/colorPatterns.mjs';
+import { hwbPattern, hslLvl4Pattern } from '../strategies/regexPatterns/colorPatterns.mjs';
 
 /**
  * * As of August 16, 2023,
@@ -31,16 +31,14 @@ export function getTextBackgroundColor(markerBackground, color) {
    *   * scientific notation
    *   * `none` expression
    */
-  try {
-    const topColor = new ColorTranslator(color);
+
+  let topColor = getHSLColor(color);
+  if (topColor === undefined) topColor = getHWBColor(color);
+
+  if (topColor !== undefined) {
     return textBackgroundColor(markerBackground, topColor, color);
-  } catch (error) {
-    const topColor = getHWBColor(color);
-    if (topColor !== undefined) {
-      return textBackgroundColor(markerBackground, topColor, color);
-    } else {
-      console.log(markerBackground, color);
-    }
+  } else {
+    console.log(markerBackground, color);
   }
 
   return color;
@@ -251,12 +249,33 @@ function getHWBColor(color) {
   if (hwbMatch) {
     const hwbColor = {};
     hwbColor.h = getHue(hwbMatch);
-    hwbColor.w = getWBValueInHWB(hwbMatch.groups.w);
-    hwbColor.b = getWBValueInHWB(hwbMatch.groups.b);
+    hwbColor.w = getPercentage(hwbMatch.groups.w);
+    hwbColor.b = getPercentage(hwbMatch.groups.b);
     hwbColor.a = getAlphaValue(hwbMatch.groups.a);
     // console.log(hwbColor);
 
     return hwbToRgb(hwbColor);
+  } else {
+    return undefined;
+  }
+}
+
+/**
+ * get hwb color from `color` string
+ *
+ * @param {string} color
+ * @returns {ColorTranslator}
+ */
+function getHSLColor(color) {
+  const hslLvl4PatternSingle = new RegExp(hslLvl4Pattern, 'i');
+  const hslLvl4Match = hslLvl4PatternSingle.exec(color);
+  if (hslLvl4Match) {
+    return new ColorTranslator({
+      h: getHue(hslLvl4Match),
+      s: getPercentage(hslLvl4Match.groups.s),
+      l: getPercentage(hslLvl4Match.groups.l),
+      a: getAlphaValue(hslLvl4Match.groups.a),
+    });
   } else {
     return undefined;
   }
@@ -295,10 +314,10 @@ function getAlphaValue(alpha) {
 }
 
 /**
- * @param {string} value -  Whiteness or Blackness as percentage in string
- * @return {number} Whiteness or Blackness as percentage 0..1
+ * @param {string} value - percentage in string
+ * @return {number} percentage 0..1
  */
-function getWBValueInHWB(percentage) {
+function getPercentage(percentage) {
   if (percentage.trim().toLowerCase() === 'none') {
     return 0;
   } else {
