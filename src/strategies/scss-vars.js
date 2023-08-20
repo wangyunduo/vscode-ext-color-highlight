@@ -32,13 +32,17 @@ export async function findScssVars(text, importerOptions) {
   while (match !== null) {
     const name = match[1];
     const value = match[2];
-    const values = await Promise.race([findHexRGBA(value), findWords(value), findFn(value), find('hwb', value)]);
+    const values = await Promise.all([findHexRGBA(value), findWords(value), findFn(value), find('hwb', value)]);
 
     // console.log(name, value, values);
 
     if (values.length) {
       varNames.push(name);
-      varColor[name] = values[0].color;
+      values.forEach(value => {
+        if (value.length) {
+          varColor[name] = value[0].color;
+        }
+      });
     }
 
     match = setVariable.exec(textWithImports);
