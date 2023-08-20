@@ -1,6 +1,4 @@
-import { findHexRGBA } from './hex';
-import { findWords } from './words';
-import { find, findFn, sortStringsDesc } from './functions';
+import { findColors, sortStringsDesc } from './functions';
 
 const setVariable = /^\s*\@([-\w]+)\s*:\s*(.*)$/gm;
 
@@ -23,7 +21,7 @@ export async function findLessVars(text) {
   while (match !== null) {
     const name = match[1];
     const value = match[2];
-    const values = await Promise.race([findHexRGBA(value), findWords(value), findFn(value), find('hwb', value)]);
+    const values = await Promise.race(findColors(value));
 
     if (values.length) {
       varNames.push(name);
