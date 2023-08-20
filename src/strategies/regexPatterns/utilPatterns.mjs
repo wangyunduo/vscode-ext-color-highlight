@@ -6,15 +6,17 @@
  */
 export const numberPattern = /[+-]?(\d+(\.\d+)?|\.\d+)([eE][-+]?\d+)?/;
 
+const angleUnitsPattern = /(deg|grad|rad|turn)/;
 /**
  * * Angle values
- *     are <dimension>s denoted by <angle>.
- *     <dimension>: Numbers with Units
- *     The angle unit identifiers are: deg, grad, rad, turn.
- * * <angle> = <number> <angle-units>
- * * <angle-units> = [deg | grad | rad | turn]
+ *     are `<dimension>`s denoted by `<angle>`.
+ * * `<dimension>`: Numbers with Units.
+ *     The angle unit identifiers are: `deg`, `grad`, `rad`, `turn`.
+ *   ```
+ *   <angle> = <number> <angle-units>
+ *   <angle-units> = [deg | grad | rad | turn]
+ *   ```
  */
-const angleUnitsPattern = /(deg|grad|rad|turn)/;
 export const anglePattern = new RegExp(
   `(?<angleNumber>${numberPattern.source})(?<angleUnit>${angleUnitsPattern.source})`,
 );
@@ -22,7 +24,9 @@ export const anglePattern = new RegExp(
 /**
  * * Hue
  *     is represented as an angle of the color circle
- * * <hue> = <number> | <angle>
+ *   ```
+ *   <hue> = <number> | <angle>
+ *   ```
  */
 export const huePattern = new RegExp(`(${numberPattern.source}|${anglePattern.source})`);
 
@@ -36,6 +40,8 @@ export const percentagePattern = new RegExp(`${numberPattern.source}%`);
 
 /**
  * * alpha-value
- * * <alpha-value> = <number> | <percentage>
+ *   ```
+ *   <alpha-value> = <number> | <percentage>
+ *   ```
  */
 export const alphaValuePattern = new RegExp(`(${numberPattern.source}|${percentagePattern.source})`);
