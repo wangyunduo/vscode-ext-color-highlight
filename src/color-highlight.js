@@ -55,6 +55,7 @@ export class DocumentHighlight {
       if (isValid) this.strategies.push(findRgbNoFn);
     }
 
+    // todo: coupling findXxxVars together
     switch (document.languageId) {
       case 'css':
         this.strategies.push(findCssVars);
