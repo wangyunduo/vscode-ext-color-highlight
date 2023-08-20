@@ -56,7 +56,6 @@ export function findColors(value) {
 }
 
 /**
- * @exports
  * @param {string} patternName
  * @param {string} text
  * @returns {{
@@ -65,7 +64,7 @@ export function findColors(value) {
  *  color: string
  * }}
  */
-export async function find(patternName, text) {
+async function find(patternName, text) {
   let regExp;
   switch (patternName) {
     case 'hsl': {
