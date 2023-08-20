@@ -1,3 +1,5 @@
+import { findHexRGBA } from './hex';
+import { findWords } from './words';
 import { hwbPattern, hslLvl4Pattern } from './regexPatterns/colorPatterns.mjs';
 
 const colorFunctions =
@@ -47,6 +49,10 @@ export function sortStringsDesc(arr) {
 
 export function getColorFinders() {
   return [text => find('hwb', text), text => find('hsl', text)];
+}
+
+export function findColors(value) {
+  return [findHexRGBA(value), findWords(value), findFn(value), find('hwb', value)];
 }
 
 /**
