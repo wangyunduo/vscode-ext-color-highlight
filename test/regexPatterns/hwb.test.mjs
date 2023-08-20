@@ -1,4 +1,4 @@
-import hwbPattern from '../../src/strategies/regexPatterns/hwbPattern.mjs';
+import { hwbPattern } from '../../src/strategies/regexPatterns/colorPatterns.mjs';
 
 const validHwb = [
   'hwb(240 none none)',
@@ -29,7 +29,7 @@ const inValidHwb = [
   'hwb(2/3turn 0%none/none)',
   // ! hue cannot be a percentage
   'hwb(100% none 50% / none)',
-  // * whiteness and Blackness should be percentages
+  // * whiteness and blackness should be percentages
   'hwb(200deg 0.75 0.25 / 75%)',
   /**
    * * Legacy syntax are no longer supported by hwb

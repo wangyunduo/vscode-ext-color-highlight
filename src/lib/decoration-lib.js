@@ -1,5 +1,5 @@
 import { ColorTranslator } from 'colortranslator';
-import hwbPattern from '../strategies/regexPatterns/hwbPattern.mjs';
+import { hwbPattern, hslPattern } from '../strategies/regexPatterns/colorPatterns.mjs';
 
 /**
  * * As of August 16, 2023,

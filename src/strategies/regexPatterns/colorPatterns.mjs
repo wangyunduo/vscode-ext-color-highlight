@@ -1,3 +1,5 @@
+import { huePattern, percentagePattern, alphaValuePattern } from './utilPatterns.mjs';
+
 /**
  * * css hwb() function
  * * https://www.w3.org/TR/css-color-4/#funcdef-hwb
@@ -20,12 +22,12 @@
  *   <hue> = <number> | <angle>
  *
  */
-
-import { huePattern, percentagePattern, alphaValuePattern } from './utilPatterns.mjs';
-
-const hwbPattern = new RegExp(
+export const hwbPattern = new RegExp(
   `hwb\\(\\s*(?<h>${huePattern.source}|none)\\s+(?<w>${percentagePattern.source}|none )\\s*(?<b>${percentagePattern.source}|none)\\s*(\\/\\s*(?<a>${alphaValuePattern.source}|none))?\\s*\\)`,
   'i',
 );
 
-export default hwbPattern;
+export const hslPattern = new RegExp(
+  `hsla?\\(\\s*(?<h>${huePattern.source}|none)\\s+(?<s>${percentagePattern.source}|none )\\s*(?<l>${percentagePattern.source}|none)\\s*(\\/\\s*(?<a>${alphaValuePattern.source}|none))?\\s*\\)`,
+  'i',
+);
