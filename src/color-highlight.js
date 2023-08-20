@@ -4,10 +4,9 @@ import { findScssVars } from './strategies/scss-vars';
 import { findLessVars } from './strategies/less-vars';
 import { findStylVars } from './strategies/styl-vars';
 import { findCssVars } from './strategies/css-vars';
-import { findFn } from './strategies/functions';
+import { findFn, find } from './strategies/functions';
 import { findRgbNoFn } from './strategies/rgbWithoutFunction';
 import { findHexARGB, findHexRGBA } from './strategies/hex';
-import { findHwb } from './strategies/hwb';
 import { findWords } from './strategies/words';
 import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
@@ -26,7 +25,7 @@ export class DocumentHighlight {
     this.disposed = false;
 
     this.document = document;
-    this.strategies = [findFn, findHwb];
+    this.strategies = [text => find('hsl', text), text => find('hwb', text)];
 
     if (viewConfig.useARGB == true) {
       this.strategies.push(findHexARGB);

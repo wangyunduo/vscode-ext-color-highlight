@@ -1,7 +1,6 @@
 import { findHexRGBA } from './hex';
 import { findWords } from './words';
-import { findFn, sortStringsDesc } from './functions';
-import { findHwb } from './hwb';
+import { find, findFn, sortStringsDesc } from './functions';
 import { parseImports } from '../lib/sass-importer';
 
 const setVariable = /^\s*\$([-\w]+)\s*:\s*(.*)$/gm;
@@ -20,7 +19,7 @@ export async function findScssVars(text, importerOptions) {
 
   try {
     textWithImports = await parseImports(importerOptions);
-  } catch(err) {
+  } catch (err) {
     console.log('Error during imports loading, falling back to local variables parsing');
   }
 
@@ -33,12 +32,9 @@ export async function findScssVars(text, importerOptions) {
   while (match !== null) {
     const name = match[1];
     const value = match[2];
-    const values = await Promise.race([
-      findHexRGBA(value),
-      findWords(value),
-      findFn(value),
-      findHwb(value)
-    ]);
+    const values = await Promise.race([findHexRGBA(value), findWords(value), findFn(value), find('hwb', value)]);
+
+    // console.log(name, value, values);
 
     if (values.length) {
       varNames.push(name);
@@ -66,12 +62,11 @@ export async function findScssVars(text, importerOptions) {
     result.push({
       start,
       end,
-      color: varColor[varName]
+      color: varColor[varName],
     });
 
     match = varNamesRegex.exec(text);
   }
-
 
   return result;
 }
