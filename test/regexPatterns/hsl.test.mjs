@@ -1,4 +1,4 @@
-import { hslLvl4Pattern } from '../../src/strategies/regexPatterns/colorPatterns.mjs';
+import { hslLvl4Pattern, hslLegacyPattern } from '../../src/strategies/regexPatterns/colorPatterns.mjs';
 
 const validLvl4Hsl = [
   'hsl(240 none none)',
@@ -37,12 +37,39 @@ const inValidLvl4Hsl = [
   'hsl(100, 50%, 50%)',
 ];
 
+const validLegacyHsl = [
+  'hsl( 180 , 100% , 50% , 0.5 )',
+  'hsl(180,100%,50%,0.5)',
+  'hsl( 180 , 100% , 50% )',
+  'hsl(180,100%,50%)',
+  'hsla( 180 , 100% , 50% , 0.5 )',
+  'hsla(180,100%,50%,0.5)',
+  'hsla( 180 , 100% , 50% )',
+  'hsla(180,100%,50%)',
+];
+
+const invalidLegacyHsl = ['hsl( 180  100%  50% / 0.5 )', 'hsl(180, 100%, 50%, none)'];
+
+console.log('valid CSS Color Module Level 4 HSL:');
 validLvl4Hsl.forEach(str => {
   const result = hslLvl4Pattern.test(str);
   console.log(`${result ? '✅' : '❌'} ${str} should be true: ${result}`);
 });
 
+console.log('\ninvalid CSS Color Module Level 4 HSL:');
 inValidLvl4Hsl.forEach(str => {
   const result = hslLvl4Pattern.test(str);
+  console.log(`${result ? '❌' : '✅'} ${str} should be false: ${result}`);
+});
+
+console.log('\nvalid CSS legacy HSL color:');
+validLegacyHsl.forEach(str => {
+  const result = hslLegacyPattern.test(str);
+  console.log(`${result ? '✅' : '❌'} ${str} should be true: ${result}`);
+});
+
+console.log('\ninvalid CSS legacy HSL color:');
+invalidLegacyHsl.forEach(str => {
+  const result = hslLegacyPattern.test(str);
   console.log(`${result ? '❌' : '✅'} ${str} should be false: ${result}`);
 });
