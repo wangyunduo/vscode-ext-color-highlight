@@ -1,5 +1,5 @@
 import { ColorTranslator } from 'colortranslator';
-import { hwbPattern, hslLvl4Pattern } from '../strategies/regexPatterns/colorPatterns.mjs';
+import { hwbPattern, hslLvl4Pattern, hslLegacyPattern } from '../strategies/regexPatterns/colorPatterns.mjs';
 
 /**
  * * As of August 16, 2023,
@@ -84,7 +84,7 @@ export function getTextColor(color) {
  * @returns {ColorTranslator} parsed color | undefined
  */
 function getColor(color, errorInfo = 'none') {
-  const functionsToTry = [getHslLvl4Color, getHWBColor];
+  const functionsToTry = [getHslColor, getHWBColor];
 
   for (const func of functionsToTry) {
     const result = func(color);
@@ -137,20 +137,23 @@ function getHWBColor(color) {
 }
 
 /**
- * get hwb color from `color` string
+ * get hsl color from `color` string
  *
  * @param {string} color
  * @returns {ColorTranslator}
  */
-function getHslLvl4Color(color) {
+function getHslColor(color) {
   const hslLvl4PatternSingle = new RegExp(hslLvl4Pattern, 'i');
-  const hslLvl4Match = hslLvl4PatternSingle.exec(color);
-  if (hslLvl4Match) {
+  const hslLegacyPatternSingle = new RegExp(hslLegacyPattern, 'i');
+  let hslMatch = hslLvl4PatternSingle.exec(color);
+  if (!hslMatch) hslMatch = hslLegacyPatternSingle.exec(color);
+
+  if (hslMatch) {
     return new ColorTranslator({
-      h: getHue(hslLvl4Match),
-      s: getPercentage(hslLvl4Match.groups.s) * 100,
-      l: getPercentage(hslLvl4Match.groups.l) * 100,
-      a: getAlphaValue(hslLvl4Match.groups.a),
+      h: getHue(hslMatch),
+      s: getPercentage(hslMatch.groups.s) * 100,
+      l: getPercentage(hslMatch.groups.l) * 100,
+      a: getAlphaValue(hslMatch.groups.a),
     });
   } else {
     return undefined;
