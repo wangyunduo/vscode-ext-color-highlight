@@ -1,5 +1,5 @@
-import { findColors, sortStringsDesc } from '../functions';
-import { parseImports } from '../../lib/sass-importer';
+import { findColors, sortStringsDesc } from './functions';
+import { parseImports } from '../lib/sass-importer';
 
 const cssVar = /^\s*(--[-\w]+)\s*:\s*(.*)$/gm;
 const lessVar = /^\s*\@([-\w]+)\s*:\s*(.*)$/gm;
