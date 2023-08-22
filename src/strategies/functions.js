@@ -1,4 +1,4 @@
-import { findHexRGBA } from './hex';
+import { findHexRGBA } from './specialColorFindFunctions/hex';
 import { findWords } from './words';
 import colorPatterns from './regexPatterns/colorPatterns.mjs';
 

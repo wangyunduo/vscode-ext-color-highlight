@@ -6,7 +6,7 @@ import { findStylVars } from './strategies/styl-vars';
 import { findCssVars } from './strategies/css-vars';
 import { getColorFinders } from './strategies/functions';
 import { findRgbNoFn } from './strategies/rgbWithoutFunction';
-import { findHexARGB, findHexRGBA } from './strategies/hex';
+import { findHexARGB, findHexRGBA } from './strategies/specialColorFindFunctions/hex';
 import { findWords } from './strategies/words';
 import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
