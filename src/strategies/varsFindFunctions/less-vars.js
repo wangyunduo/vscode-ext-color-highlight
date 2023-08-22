@@ -1,4 +1,4 @@
-import { findColors, sortStringsDesc } from './functions';
+import { findColors, sortStringsDesc } from '../functions';
 
 const setVariable = /^\s*\@([-\w]+)\s*:\s*(.*)$/gm;
 

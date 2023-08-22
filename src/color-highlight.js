@@ -1,9 +1,9 @@
 'use strict';
 import { workspace, window, Range } from 'vscode';
-import { findScssVars } from './strategies/scss-vars';
-import { findLessVars } from './strategies/less-vars';
-import { findStylVars } from './strategies/styl-vars';
-import { findCssVars } from './strategies/css-vars';
+import { findScssVars } from './strategies/varsFindFunctions/scss-vars';
+import { findLessVars } from './strategies/varsFindFunctions/less-vars';
+import { findStylVars } from './strategies/varsFindFunctions/styl-vars';
+import { findCssVars } from './strategies/varsFindFunctions/css-vars';
 import { getColorFinders } from './strategies/functions';
 import { getRgbNoFnFinders } from './strategies/specialColorFindFunctions/rgbWithoutFunction';
 import { findHexARGB, findHexRGBA } from './strategies/specialColorFindFunctions/hex';

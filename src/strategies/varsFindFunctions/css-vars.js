@@ -1,6 +1,6 @@
-import { findColors, sortStringsDesc } from './functions';
+import { findColors, sortStringsDesc } from '../functions';
 
-const setVariable = /^\s*\$?([-\w]+)\s*=\s*(.*)$/gm;
+const setVariable = /^\s*(--[-\w]+)\s*:\s*(.*)$/gm;
 
 /**
  * @export
@@ -11,7 +11,7 @@ const setVariable = /^\s*\$?([-\w]+)\s*=\s*(.*)$/gm;
  *  color: string
  * }}
  */
-export async function findStylVars(text) {
+export async function findCssVars(text) {
   let match = setVariable.exec(text);
   let result = [];
 
@@ -37,7 +37,7 @@ export async function findStylVars(text) {
 
   varNames = sortStringsDesc(varNames);
 
-  const varNamesRegex = new RegExp(`\\$?(${varNames.join('|')})(?!-|\\s*=)`, 'g');
+  const varNamesRegex = new RegExp(`var\\((${varNames.join('|')})\\)`, 'g');
 
   match = varNamesRegex.exec(text);
 

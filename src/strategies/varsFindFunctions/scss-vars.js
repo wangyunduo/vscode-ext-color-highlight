@@ -1,5 +1,5 @@
-import { findColors, sortStringsDesc } from './functions';
-import { parseImports } from '../lib/sass-importer';
+import { findColors, sortStringsDesc } from '../functions';
+import { parseImports } from '../../lib/sass-importer';
 
 const setVariable = /^\s*\$([-\w]+)\s*:\s*(.*)$/gm;
 
