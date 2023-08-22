@@ -132,6 +132,45 @@ export const rgbLegacyNumberPattern = new RegExp(
   'i',
 );
 
+const noRgbLvl4PercentagePattern = new RegExp(
+  `(?<r>${percentagePattern.source}|none )\\s*` +
+    `(?<g>${percentagePattern.source}|none )\\s*` +
+    `(?<b>${percentagePattern.source}|none)\\s*` +
+    `(\\/\\s*(?<a>${alphaValuePattern.source}|none))?`,
+  'i',
+);
+
+const noRgbLvl4NumberPattern = new RegExp(
+  `(?<r>${numberPattern.source}|none)\\s+` +
+    `(?<g>${numberPattern.source}|none)\\s+` +
+    `(?<b>${numberPattern.source}|none)\\s*` +
+    `(\\/\\s*(?<a>${alphaValuePattern.source}|none))?`,
+  'i',
+);
+
+const noRgbLegacyPercentagePattern = new RegExp(
+  `(?<r>${percentagePattern.source})\\s*,\\s*` +
+    `(?<g>${percentagePattern.source})\\s*,\\s*` +
+    `(?<b>${percentagePattern.source})\\s*` +
+    `(,\\s*(?<a>${alphaValuePattern.source}))?`,
+  'i',
+);
+
+const noRgbLegacyNumberPattern = new RegExp(
+  `(?<r>${numberPattern.source})\\s*,\\s*` +
+    `(?<g>${numberPattern.source})\\s*,\\s*` +
+    `(?<b>${numberPattern.source})\\s*` +
+    `(,\\s*(?<a>${alphaValuePattern.source}))?`,
+  'i',
+);
+
+export const noRgbPatterns = [
+  noRgbLegacyNumberPattern,
+  noRgbLegacyPercentagePattern,
+  noRgbLvl4NumberPattern,
+  noRgbLvl4PercentagePattern,
+];
+
 const colorPatterns = [
   rgbLegacyNumberPattern,
   rgbLegacyPercentagePattern,
