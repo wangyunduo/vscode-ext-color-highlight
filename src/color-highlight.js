@@ -1,13 +1,10 @@
 'use strict';
 import { workspace, window, Range } from 'vscode';
-import { findScssVars } from './strategies/varsFindFunctions/scss-vars';
-import { findLessVars } from './strategies/varsFindFunctions/less-vars';
-import { findStylVars } from './strategies/varsFindFunctions/styl-vars';
-import { findCssVars } from './strategies/varsFindFunctions/css-vars';
 import { getColorFinders } from './strategies/functions';
 import { getRgbNoFnFinders } from './strategies/specialColorFindFunctions/rgbWithoutFunction';
 import { findHexARGB, findHexRGBA } from './strategies/specialColorFindFunctions/hex';
 import { findWords } from './strategies/specialColorFindFunctions/words';
+import { findCssVars, findScssVars, findLessVars, findStylusVars } from './strategies/vars';
 import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
 
@@ -64,7 +61,7 @@ export class DocumentHighlight {
         this.strategies.push(findLessVars);
         break;
       case 'stylus':
-        this.strategies.push(findStylVars);
+        this.strategies.push(findStylusVars);
         break;
       case 'sass':
       case 'scss':
