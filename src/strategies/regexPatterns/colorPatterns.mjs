@@ -131,3 +131,11 @@ export const rgbLegacyNumberPattern = new RegExp(
     `(,\\s*(?<a>${alphaValuePattern.source}))?\\s*\\)`,
   'i',
 );
+
+const colorPatterns = [
+  hslLegacyPattern,
+  hslLvl4Pattern,
+  hwbPattern,
+];
+
+export default colorPatterns;
