@@ -1,4 +1,4 @@
-import { hwbPattern } from './regexPatterns/colorPatterns.mjs';
+import { hwbPattern } from '../regexPatterns/colorPatterns.mjs';
 
 /**
  * @export
