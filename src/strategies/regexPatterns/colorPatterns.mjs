@@ -133,6 +133,10 @@ export const rgbLegacyNumberPattern = new RegExp(
 );
 
 const colorPatterns = [
+  rgbLegacyNumberPattern,
+  rgbLegacyPercentagePattern,
+  rgbLvl4NumberPattern,
+  rgbLvl4PercentagePattern,
   hslLegacyPattern,
   hslLvl4Pattern,
   hwbPattern,
