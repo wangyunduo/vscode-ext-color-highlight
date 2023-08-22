@@ -1,5 +1,5 @@
 import { findHexRGBA } from './specialColorFindFunctions/hex';
-import { findWords } from './words';
+import { findWords } from './specialColorFindFunctions/words';
 import colorPatterns from './regexPatterns/colorPatterns.mjs';
 
 export function sortStringsDesc(arr) {
