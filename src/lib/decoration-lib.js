@@ -1,5 +1,13 @@
 import { ColorTranslator } from 'colortranslator';
-import { hwbPattern, hslLvl4Pattern, hslLegacyPattern } from '../strategies/regexPatterns/colorPatterns.mjs';
+import {
+  rgbLegacyNumberPattern,
+  rgbLegacyPercentagePattern,
+  rgbLvl4NumberPattern,
+  rgbLvl4PercentagePattern,
+  hwbPattern,
+  hslLvl4Pattern,
+  hslLegacyPattern,
+} from '../strategies/regexPatterns/colorPatterns.mjs';
 
 /**
  * * As of August 16, 2023,
@@ -84,7 +92,7 @@ export function getTextColor(color) {
  * @returns {ColorTranslator} parsed color | undefined
  */
 function getColor(color, errorInfo = 'none') {
-  const functionsToTry = [getHslColor, getHWBColor];
+  const functionsToTry = [getRgbColor, getHslColor, getHWBColor];
 
   for (const func of functionsToTry) {
     const result = func(color);
@@ -110,6 +118,38 @@ function getColor(color, errorInfo = 'none') {
 }
 
 /**
+ * get rgb color from `color` string
+ *
+ * @param {string} color
+ * @returns {ColorTranslator}
+ */
+function getRgbColor(color) {
+  let rgbNumberMatch = rgbLegacyNumberPattern.exec(color);
+  if (!rgbNumberMatch) rgbNumberMatch = rgbLvl4NumberPattern.exec(color);
+
+  let rgbPercentageMatch = rgbLegacyPercentagePattern.exec(color);
+  if (!rgbPercentageMatch) rgbPercentageMatch = rgbLvl4PercentagePattern.exec(color);
+
+  if (rgbNumberMatch) {
+    return new ColorTranslator({
+      r: getRGBNumber(rgbNumberMatch.groups.r),
+      g: getRGBNumber(rgbNumberMatch.groups.g),
+      b: getRGBNumber(rgbNumberMatch.groups.b),
+      a: getAlphaValue(rgbNumberMatch.groups.a),
+    });
+  } else if (rgbPercentageMatch) {
+    return new ColorTranslator({
+      r: getPercentage(rgbPercentageMatch.groups.r) * 255,
+      g: getPercentage(rgbPercentageMatch.groups.g) * 255,
+      b: getPercentage(rgbPercentageMatch.groups.b) * 255,
+      a: getAlphaValue(rgbPercentageMatch.groups.a),
+    });
+  }
+
+  return undefined;
+}
+
+/**
  * get hwb color from `color` string
  *
  * @param {string} color
@@ -125,6 +165,10 @@ function getHWBColor(color) {
   if (hwbMatch) {
     const hwbColor = {};
     hwbColor.h = getHue(hwbMatch);
+    /**
+     * Custom hwb color parser: `hwbToRgb()`
+     * using w, b in [0,1]
+     */
     hwbColor.w = getPercentage(hwbMatch.groups.w);
     hwbColor.b = getPercentage(hwbMatch.groups.b);
     hwbColor.a = getAlphaValue(hwbMatch.groups.a);
@@ -206,6 +250,22 @@ function getPercentage(percentage) {
     if (value < 0) return 0;
 
     return value / 100;
+  }
+}
+
+/**
+ * @param {string} value - percentage in string
+ * @return {number} rgb number value [0, 255]
+ */
+function getRGBNumber(number) {
+  if (number.trim().toLowerCase() === 'none') {
+    return 0;
+  } else {
+    let value = Number(number);
+    if (value > 255) value = 255;
+    if (value < 0) value = 0;
+
+    return value;
   }
 }
 
