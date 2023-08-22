@@ -1,7 +1,8 @@
 import Color from 'color';
 
 // Using [^\S\n] to avoid matching colors between lines
-const colorRgb = /(\d{1,3})[^\S\n]*(?<commaOrSpace>[^\S\n]|,)[^\S\n]*(\d{1,3})[^\S\n]*\k<commaOrSpace>[^\S\n]*(\d{1,3})/g;
+const colorRgb =
+  /(\d{1,3})[^\S\n]*(?<commaOrSpace>[^\S\n]|,)[^\S\n]*(\d{1,3})[^\S\n]*\k<commaOrSpace>[^\S\n]*(\d{1,3})/g;
 
 /**
  * @export
@@ -21,17 +22,15 @@ export async function findRgbNoFn(text) {
     const start = match.index + (match[0].length - matchedColor.length);
     const end = colorRgb.lastIndex;
 
+    // console.log(match);
+
     try {
-      const color = Color.rgb(
-        parseInt(red),
-        parseInt(green),
-        parseInt(blue)
-      ).string();
+      const color = Color.rgb(parseInt(red), parseInt(green), parseInt(blue)).string();
 
       result.push({
         start,
         end,
-        color
+        color,
       });
     } catch (e) {
       console.error(e);
