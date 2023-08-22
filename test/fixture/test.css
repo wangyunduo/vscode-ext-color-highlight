@@ -1,3 +1,7 @@
+.test {
+  --test-var: rgb(100, 0, 0);
+  color: var(--test-var);
+}
 .red {
   color: red;
 }
@@ -36,4 +40,7 @@
 }
 .test {
   color: hwb(0.2turn 12% 39% / 30%);
+}
+.test {
+  color: white;
 }
