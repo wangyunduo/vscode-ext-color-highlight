@@ -15,7 +15,7 @@ const namedColorPattern = new RegExp('.?(' + preparedRePart + ')(?!-)', 'g');
  *  color: string
  * }}
  */
-export async function findWords(text) {
+export async function findNamedColor(text) {
   let match = namedColorPattern.exec(text);
   let result = [];
 

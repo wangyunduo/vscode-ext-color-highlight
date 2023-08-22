@@ -3,7 +3,7 @@ import { workspace, window, Range } from 'vscode';
 import { getColorFinders } from './strategies/functions';
 import { getRgbNoFnFinders } from './strategies/specialColorFindFunctions/rgbWithoutFunction';
 import { findHexARGB, findHexRGBA } from './strategies/specialColorFindFunctions/hex';
-import { findWords } from './strategies/specialColorFindFunctions/words';
+import { findNamedColor } from './strategies/specialColorFindFunctions/namedColor';
 import { findCssVars, findScssVars, findLessVars, findStylusVars } from './strategies/vars';
 import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
@@ -31,7 +31,7 @@ export class DocumentHighlight {
     }
 
     if (colorWordsLanguages.indexOf(document.languageId) > -1 || viewConfig.matchWords) {
-      this.strategies.push(findWords);
+      this.strategies.push(findNamedColor);
     }
 
     if (viewConfig.matchRgbWithNoFunction) {
