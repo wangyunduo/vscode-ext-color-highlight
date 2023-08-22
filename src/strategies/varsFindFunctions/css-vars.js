@@ -1,9 +1,44 @@
 import { findColors, sortStringsDesc } from '../functions';
+import { parseImports } from '../../lib/sass-importer';
 
-const setVariable = /^\s*(--[-\w]+)\s*:\s*(.*)$/gm;
+const cssVar = /^\s*(--[-\w]+)\s*:\s*(.*)$/gm;
+const lessVar = /^\s*\@([-\w]+)\s*:\s*(.*)$/gm;
+const stylusVar = /^\s*\$?([-\w]+)\s*=\s*(.*)$/gm;
+const scssVar = /^\s*\$([-\w]+)\s*:\s*(.*)$/gm;
+
+function getCssVarNamesRegex(varNames) {
+  return new RegExp(`var\\((${varNames.join('|')})\\)`, 'g');
+}
+
+function getLessVarNamesRegex(varNames) {
+  return new RegExp(`\\@(${varNames.join('|')})(?!-|\\s*:)`, 'g');
+}
+
+function getStylusVarNamesRegex(varNames) {
+  return new RegExp(`\\$?(${varNames.join('|')})(?!-|\\s*=)`, 'g');
+}
+
+function getScssVarNamesRegex(varNames) {
+  return new RegExp(`\\$(${varNames.join('|')})(?!-|\\s*:)`, 'g');
+}
+
+export function findCssVars(text) {
+  return findVars(text, cssVar, getCssVarNamesRegex);
+}
+
+export function findLessVars(text) {
+  return findVars(text, lessVar, getLessVarNamesRegex);
+}
+
+export function findStylusVars(text) {
+  return findVars(text, stylusVar, getStylusVarNamesRegex);
+}
+
+export function findScssVars(text, importerOptions) {
+  return findVars(text, scssVar, getScssVarNamesRegex, importerOptions);
+}
 
 /**
- * @export
  * @param {string} text
  * @returns {{
  *  start: number,
@@ -11,8 +46,19 @@ const setVariable = /^\s*(--[-\w]+)\s*:\s*(.*)$/gm;
  *  color: string
  * }}
  */
-export async function findCssVars(text) {
-  let match = setVariable.exec(text);
+async function findVars(text, varPattern, varNamesRegexGetter, importerOptions) {
+  let varText = text;
+
+  // * importer for scss files
+  if (importerOptions) {
+    try {
+      varText = await parseImports(importerOptions);
+    } catch (err) {
+      console.log('Error during imports loading, falling back to local variables parsing');
+    }
+  }
+
+  let match = varPattern.exec(varText);
   let result = [];
 
   const varColor = {};
@@ -21,14 +67,18 @@ export async function findCssVars(text) {
   while (match !== null) {
     const name = match[1];
     const value = match[2];
-    const values = await Promise.race(findColors(value));
+    const values = await Promise.all(findColors(value));
 
     if (values.length) {
       varNames.push(name);
-      varColor[name] = values[0].color;
+      values.forEach(value => {
+        if (value.length) {
+          varColor[name] = value[0].color;
+        }
+      });
     }
 
-    match = setVariable.exec(text);
+    match = varPattern.exec(varText);
   }
 
   if (!varNames.length) {
@@ -37,7 +87,7 @@ export async function findCssVars(text) {
 
   varNames = sortStringsDesc(varNames);
 
-  const varNamesRegex = new RegExp(`var\\((${varNames.join('|')})\\)`, 'g');
+  const varNamesRegex = varNamesRegexGetter(varNames);
 
   match = varNamesRegex.exec(text);
 
