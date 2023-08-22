@@ -5,7 +5,7 @@ import { findLessVars } from './strategies/less-vars';
 import { findStylVars } from './strategies/styl-vars';
 import { findCssVars } from './strategies/css-vars';
 import { getColorFinders } from './strategies/functions';
-import { findRgbNoFn } from './strategies/specialColorFindFunctions/rgbWithoutFunction';
+import { getRgbNoFnFinders } from './strategies/specialColorFindFunctions/rgbWithoutFunction';
 import { findHexARGB, findHexRGBA } from './strategies/specialColorFindFunctions/hex';
 import { findWords } from './strategies/specialColorFindFunctions/words';
 import { DecorationMap } from './lib/decoration-map';
@@ -52,7 +52,7 @@ export class DocumentHighlight {
         isValid = false;
       }
 
-      if (isValid) this.strategies.push(findRgbNoFn);
+      if (isValid) this.strategies.push(...getRgbNoFnFinders());
     }
 
     // todo: coupling findXxxVars together
