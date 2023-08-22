@@ -1,11 +1,10 @@
-import Color from 'color';
-import webColors from 'color-name';
+import namedColor from '../../lib/named-color';
 
-const preparedRePart = Object.keys(webColors)
+const preparedRePart = Object.keys(namedColor)
   .map(color => `\\b${color}\\b`)
   .join('|');
 
-const colorWeb = new RegExp('.?(' + preparedRePart + ')(?!-)', 'g');
+const namedColorPattern = new RegExp('.?(' + preparedRePart + ')(?!-)', 'g');
 
 /**
  * @export
@@ -17,33 +16,30 @@ const colorWeb = new RegExp('.?(' + preparedRePart + ')(?!-)', 'g');
  * }}
  */
 export async function findWords(text) {
-  let match = colorWeb.exec(text);
+  let match = namedColorPattern.exec(text);
   let result = [];
 
   while (match !== null) {
     const firstChar = match[0][0];
     const matchedColor = match[1];
     const start = match.index + (match[0].length - matchedColor.length);
-    const end = colorWeb.lastIndex;
+    const end = namedColorPattern.lastIndex;
 
     if (firstChar.length && /[-\\$@#]/.test(firstChar)) {
-      match = colorWeb.exec(text);
+      match = namedColorPattern.exec(text);
       continue;
     }
 
-    try {
-      const color = Color(matchedColor)
-        .rgb()
-        .string();
+    const color =
+      'rgb(' + namedColor[matchedColor].r + ' ' + namedColor[matchedColor].g + ' ' + namedColor[matchedColor].b + ')';
 
-      result.push({
-        start,
-        end,
-        color
-      });
-    } catch (e) { }
+    result.push({
+      start,
+      end,
+      color,
+    });
 
-    match = colorWeb.exec(text);
+    match = namedColorPattern.exec(text);
   }
 
   return result;
