@@ -1,8 +1,8 @@
 {
   "name": "color-highlight",
   "displayName": "Color Highlight - Hue show better version",
-  "description": "Highlight web colors in your editor, optimized for hsl and hwb formats.",
-  "version": "2.6.0-hue-0.0.1",
+  "description": "Highlight web colors in your editor, optimized for hsl and hwb formats. CSS Color Module Level 4 compliant.",
+  "version": "1.0.0-base-2.6.0",
   "publisher": "Yunduo",
   "license": "GPL-3.0",
   "engines": {
@@ -28,12 +28,12 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "bugs": {
-    "url": "https://github.com/naumovs/vscode-ext-color-highlight/issues"
+    "url": "https://github.com/wangyunduo/vscode-ext-color-highlight/issues"
   },
-  "homepage": "https://github.com/naumovs/vscode-ext-color-highlight",
+  "homepage": "https://github.com/wangyunduo/vscode-ext-color-highlight",
   "repository": {
     "type": "git",
-    "url": "https://github.com/naumovs/vscode-ext-color-highlight.git"
+    "url": "https://github.com/wangyunduo/vscode-ext-color-highlight.git"
   },
   "browser": "./dist/extension-web.js",
   "main": "./dist/extension-node.js",
