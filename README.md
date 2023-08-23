@@ -1,8 +1,8 @@
-# [vscode-ext-color-highlight](https://github.com/wangyunduo/vscode-ext-color-highlight)
+# [vscode-ext-color-highlight-css-color-4](https://github.com/wangyunduo/vscode-ext-color-highlight)
 
 `Hue show better version`
 
-`v1.0.1`
+`v1.1.0`
 
 This extension styles css/web colors found in your document.
 
