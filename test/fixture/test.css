@@ -1,6 +1,10 @@
 .test {
   --test-var: rgb(100, 0, 0);
+  --var2: hsl(220, 100%, 50%);
+  --var3: hsl(220, 100%, 90%);
   color: var(--test-var);
+  color: var(--var2);
+  color: var(--var3);
 }
 .red {
   color: red;
