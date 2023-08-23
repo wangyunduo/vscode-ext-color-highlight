@@ -8,7 +8,9 @@ import { findCssVars, findScssVars, findLessVars, findStylusVars } from './strat
 import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
 
-const colorWordsLanguages = ['css', 'scss', 'sass', 'less', 'stylus'];
+const styleSheetsLanguages = ['css', 'scss', 'sass', 'less', 'stylus'];
+// todo users can define it
+const usingRgbaLanguages = ['html', ...styleSheetsLanguages];
 
 export class DocumentHighlight {
   /**
@@ -25,12 +27,13 @@ export class DocumentHighlight {
     this.strategies = getColorFinders();
 
     if (viewConfig.useARGB == true) {
-      this.strategies.push(findHexARGB);
+      if (usingRgbaLanguages.includes(document.languageId)) this.strategies.push(findHexRGBA);
+      else this.strategies.push(findHexARGB);
     } else {
       this.strategies.push(findHexRGBA);
     }
 
-    if (colorWordsLanguages.indexOf(document.languageId) > -1 || viewConfig.matchWords) {
+    if (styleSheetsLanguages.indexOf(document.languageId) > -1 || viewConfig.matchWords) {
       this.strategies.push(findNamedColor);
     }
 
@@ -52,7 +55,6 @@ export class DocumentHighlight {
       if (isValid) this.strategies.push(...getRgbNoFnFinders());
     }
 
-    // todo: coupling findXxxVars together
     switch (document.languageId) {
       case 'css':
         this.strategies.push(findCssVars);
