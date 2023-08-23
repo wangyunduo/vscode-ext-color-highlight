@@ -2,13 +2,17 @@
 
 # Change Log
 
-## [1.0.1-base-2.6.0]
+## [1.1.0] - 2023-08-23
+
+- new extension name
+
+## [1.0.1] - unreleased
 
 - new extension icon
 - `rgbWithNoFunctionLanguages` option: default value updated
 - `matchNamedColorsLanguages` option: Language IDs to highlight named colors in these language files.
 
-## [1.0.0-base-2.6.0]
+## [1.0.0-base-2.6.0] - unreleased
 
 ### Added
 
