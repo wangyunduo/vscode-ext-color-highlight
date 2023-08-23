@@ -1,12 +1,50 @@
-.red { color: red; }
-.red { color: #f00; }
-.red { color: #ff0000; }
-.red { color: rgb(255, 0, 0); }
-.red { color: rgb(100%, 0%, 0%); }
-.red { color: rgba(255, 0, 0, 1); }
-.red { color: rgba(100%, 0%, 0%, 1); }
-.red { color: rgba(255 0 0 / 100%); }
-.red { color: hsl(0, 100%, 50%); }
-.red { color: hsla(0, 100%, 50%, 1); }
-.red { color: hwb(360, 0%, 0%); }
-.red { color: hwb(360, 0%, 0%, 1); }
+.test {
+  --test-var: rgb(100, 0, 0);
+  --var2: hsl(220, 100%, 50%);
+  --var3: hsl(220, 100%, 90%);
+  color: var(--test-var);
+  color: var(--var2);
+  color: var(--var3);
+}
+.red {
+  color: red;
+}
+.red {
+  color: #00ff00;
+  color: #00f;
+  color: #00ff006a;
+  color: #00f8;
+}
+.red {
+  color: rgb(255, 0, 0);
+}
+.red {
+  color: rgb(100%, 0%, 0%);
+}
+.red {
+  color: rgba(255, 0, 0, 1);
+}
+.red {
+  color: rgba(100%, 0%, 0%, 1);
+}
+.red {
+  color: rgba(255 0 0 / 100%);
+}
+.red {
+  color: hsl(0, 100%, 50%);
+}
+.red {
+  color: hsla(0, 100%, 50%, 1);
+}
+.red {
+  color: hwb(360 0% 0%);
+}
+.red {
+  color: hwb(0 0% 0% / 1);
+}
+.test {
+  color: hwb(0.2turn 12% 39% / 30%);
+}
+.test {
+  color: white;
+}

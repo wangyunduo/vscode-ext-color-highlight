@@ -1,4 +1,5 @@
 @import './variables.scss';
+$test: hwb(100 0% 0%);
 
 .gray {
   color: $gray;
@@ -14,4 +15,9 @@
 
 .gray3 {
   color: $gray3;
+}
+
+.test {
+  color: $blue-w50;
+  color: $test;
 }

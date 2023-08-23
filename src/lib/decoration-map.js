@@ -1,6 +1,6 @@
 'use strict';
 import vscode from 'vscode';
-import { getColorContrast } from './dynamic-contrast';
+import { getTextColor, getTextBackgroundColor } from './decoration-lib';
 
 /**
  *
@@ -9,7 +9,8 @@ import { getColorContrast } from './dynamic-contrast';
  *
  * @property {{
  *  markRuler: boolean,
- *  markerType: string
+ *  markerType: string,
+ *  markerBackground: string
  * }} options
  */
 export class DecorationMap {
@@ -17,7 +18,8 @@ export class DecorationMap {
    * Creates an instance of DecorationMap.
    * @param {{
    *  markRuler: boolean,
-   *  markerType: string
+   *  markerType: string,
+   *  markerBackground: string
    * }} options
    *
    * @memberOf DecorationMap
@@ -37,7 +39,7 @@ export class DecorationMap {
       let rules = {};
       if (this.options.markRuler) {
         rules = {
-          overviewRulerColor: color
+          overviewRulerColor: color,
         };
       }
 
@@ -61,7 +63,7 @@ export class DecorationMap {
             width: '0.7em',
             height: '0.7em',
             backgroundColor: color,
-            borderRadius: '50%'
+            borderRadius: '50%',
           };
           break;
         case 'dotbefore':
@@ -73,13 +75,13 @@ export class DecorationMap {
             width: '0.7em',
             height: '0.7em',
             backgroundColor: color,
-            borderRadius: '50%'
+            borderRadius: '50%',
           };
           break;
         case 'background':
         default:
-          rules.backgroundColor = color;
-          rules.color = getColorContrast(color);
+          rules.backgroundColor = getTextBackgroundColor(this.options.markerBackground, color);
+          rules.color = getTextColor(rules.backgroundColor);
           rules.border = `3px solid ${color}`;
           rules.borderRadius = '3px';
       }
@@ -89,13 +91,12 @@ export class DecorationMap {
     return this._map.get(color);
   }
 
-
   keys() {
     return this._keys.slice();
   }
 
   dispose() {
-    this._map.forEach((decoration) => {
+    this._map.forEach(decoration => {
       decoration.dispose();
     });
   }

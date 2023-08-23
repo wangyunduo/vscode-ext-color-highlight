@@ -1,7 +1,4 @@
-import { findHexRGBA } from './hex';
-import { findWords } from './words';
-import { findFn, sortStringsDesc } from './functions';
-import { findHwb } from './hwb';
+import { findColors, sortStringsDesc } from '../functions';
 
 const setVariable = /^\s*\$?([-\w]+)\s*=\s*(.*)$/gm;
 
@@ -24,12 +21,7 @@ export async function findStylVars(text) {
   while (match !== null) {
     const name = match[1];
     const value = match[2];
-    const values = await Promise.race([
-      findHexRGBA(value),
-      findWords(value),
-      findFn(value),
-      findHwb(value)
-    ]);
+    const values = await Promise.race(findColors(value));
 
     if (values.length) {
       varNames.push(name);
@@ -57,12 +49,11 @@ export async function findStylVars(text) {
     result.push({
       start,
       end,
-      color: varColor[varName]
+      color: varColor[varName],
     });
 
     match = varNamesRegex.exec(text);
   }
-
 
   return result;
 }

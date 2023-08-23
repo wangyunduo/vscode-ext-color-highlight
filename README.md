@@ -1,6 +1,31 @@
-# [vscode-ext-color-highlight](https://github.com/naumovs/vscode-ext-color-highlight)
+# [vscode-ext-color-highlight](https://github.com/wangyunduo/vscode-ext-color-highlight)
+
+`Hue show better version`
 
 This extension styles css/web colors found in your document.
+
+This particular version is optimized for styling colors in `hsl` and `hwb` formats.
+
+## Features
+
+- Color highlight
+  - Full support the syntax of functions `rbg()`, `hsl()`, `hwb()` in CSS Color Module Level 4.
+    - `rbg()`: [RGB functions](https://www.w3.org/TR/css-color-4/#rgb-functions)
+    - `hsl()`: [HSL Colors](https://www.w3.org/TR/css-color-4/#the-hsl-notation)
+    - `hwb()`: [HWB Colors](https://www.w3.org/TR/css-color-4/#the-hwb-notation)
+  - Hex colors
+    - Default: #RGB, #RGBA, #RRGGBB, #RRGGBBAA
+    - ARGB mode: #ARGB, #AARRGGBB
+  - All [Named colors](https://www.w3.org/TR/css-color-4/#named-colors) in CSS Color Module Level 4.
+  - Variables in style sheets
+    - css, less, stylus, scss and sass
+    - variables imported from the files (sass, scss)
+- Background color
+  - Support background color setting to highlight colors with transparency (i.e., alpha values less than 1).
+- Dynamic text color
+  - Follow [WCAG 2.0 guidelines](https://www.w3.org/TR/WCAG20/)
+  - Full support the syntax of functions `rbg()`, `hsl()`, `hwb()` in CSS Color Module Level 4.
+  - Support hex colors and variables in style sheets.
 
 ## Install
 
@@ -8,13 +33,18 @@ In VSC press Ctrl+Shift+P (Cmd+Shift+P on Mac) then type ">ext install", hit ent
 
 Still confused? Click "Get Started" above.
 
-## Questionnaire
-
-Please answer the questions in this questionnaire. Your feedback is very valuable and will help me improve this extension.
-[https://goo.gl/forms/5emac4WyQv7CWZOK2](https://goo.gl/forms/5emac4WyQv7CWZOK2)
-
-## Contributors
-
-- [lochstar](https://github.com/lochstar) - Styling modes for the marker
+## Develop
 
 Feel free to contribute!
+
+### Node version
+
+v16 recommended
+
+The following error occurs when using v18 build.
+
+```plaintext
+Error: error:0308010C:digital envelope routines::unsupported
+    at new Hash (node:internal/crypto/hash:71:19)
+...
+```

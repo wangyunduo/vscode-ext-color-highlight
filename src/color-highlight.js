@@ -1,25 +1,16 @@
 'use strict';
-import {
-  workspace,
-  window,
-  Range,
-} from 'vscode';
-import { findScssVars } from './strategies/scss-vars';
-import { findLessVars } from './strategies/less-vars';
-import { findStylVars } from './strategies/styl-vars';
-import { findCssVars } from './strategies/css-vars';
-import { findFn } from './strategies/functions';
-import { findRgbNoFn } from './strategies/rgbWithoutFunction';
-import { findHexARGB, findHexRGBA } from './strategies/hex';
-import { findHwb } from './strategies/hwb';
-import { findWords } from './strategies/words';
+import { workspace, window, Range } from 'vscode';
+import { getColorFinders } from './strategies/functions';
+import { getRgbNoFnFinders } from './strategies/specialColorFindFunctions/rgbWithoutFunction';
+import { findHexARGB, findHexRGBA } from './strategies/specialColorFindFunctions/hex';
+import { findNamedColor } from './strategies/specialColorFindFunctions/namedColor';
+import { findCssVars, findScssVars, findLessVars, findStylusVars } from './strategies/vars';
 import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
 
-const colorWordsLanguages = ['css', 'scss', 'sass', 'less', 'stylus'];
+const styleSheetsLanguages = ['css', 'scss', 'sass', 'less', 'stylus'];
 
 export class DocumentHighlight {
-
   /**
    * Creates an instance of DocumentHighlight.
    * @param {TextDocument} document
@@ -31,16 +22,17 @@ export class DocumentHighlight {
     this.disposed = false;
 
     this.document = document;
-    this.strategies = [findFn, findHwb];
+    this.strategies = getColorFinders();
 
     if (viewConfig.useARGB == true) {
-      this.strategies.push(findHexARGB);
+      if (viewConfig.rgbaOnlyLanguages.includes(document.languageId)) this.strategies.push(findHexRGBA);
+      else this.strategies.push(findHexARGB);
     } else {
       this.strategies.push(findHexRGBA);
     }
 
-    if (colorWordsLanguages.indexOf(document.languageId) > -1 || viewConfig.matchWords) {
-      this.strategies.push(findWords);
+    if (styleSheetsLanguages.indexOf(document.languageId) > -1 || viewConfig.matchWords) {
+      this.strategies.push(findNamedColor);
     }
 
     if (viewConfig.matchRgbWithNoFunction) {
@@ -58,7 +50,7 @@ export class DocumentHighlight {
         isValid = false;
       }
 
-      if (isValid) this.strategies.push(findRgbNoFn);
+      if (isValid) this.strategies.push(...getRgbNoFnFinders());
     }
 
     switch (document.languageId) {
@@ -69,16 +61,18 @@ export class DocumentHighlight {
         this.strategies.push(findLessVars);
         break;
       case 'stylus':
-        this.strategies.push(findStylVars);
+        this.strategies.push(findStylusVars);
         break;
       case 'sass':
       case 'scss':
-        this.strategies.push(text => findScssVars(text, {
-          data: text,
-          cwd: dirname(document.uri.fsPath),
-          extensions: ['.scss', '.sass'],
-          includePaths: viewConfig.sass.includePaths || []
-        }));
+        this.strategies.push(text =>
+          findScssVars(text, {
+            data: text,
+            cwd: dirname(document.uri.fsPath),
+            extensions: ['.scss', '.sass'],
+            includePaths: viewConfig.sass.includePaths || [],
+          }),
+        );
         break;
     }
 
@@ -87,7 +81,7 @@ export class DocumentHighlight {
 
   initialize(viewConfig) {
     this.decorations = new DecorationMap(viewConfig);
-    this.listner = workspace.onDidChangeTextDocument(({ document }) => this.onUpdate(document));
+    this.listener = workspace.onDidChangeTextDocument(({ document }) => this.onUpdate(document));
   }
 
   /**
@@ -130,18 +124,14 @@ export class DocumentHighlight {
         return false;
       }
 
-      const updateStack = this.decorations.keys()
-        .reduce((state, color) => {
-          state[color] = [];
-          return state;
-        }, {});
+      const updateStack = this.decorations.keys().reduce((state, color) => {
+        state[color] = [];
+        return state;
+      }, {});
 
       for (const color in colorRanges) {
         updateStack[color] = colorRanges[color].map(item => {
-          return new Range(
-            this.document.positionAt(item.start),
-            this.document.positionAt(item.end)
-          );
+          return new Range(this.document.positionAt(item.start), this.document.positionAt(item.end));
         });
       }
 
@@ -160,26 +150,25 @@ export class DocumentHighlight {
   dispose() {
     this.disposed = true;
     this.decorations.dispose();
-    this.listner.dispose();
+    this.listener.dispose();
 
     this.decorations = null;
     this.document = null;
     this.colors = null;
-    this.listner = null;
+    this.listener = null;
   }
 }
 
 function groupByColor(results) {
-  return results
-    .reduce((collection, item) => {
-      if (!collection[item.color]) {
-        collection[item.color] = [];
-      }
+  return results.reduce((collection, item) => {
+    if (!collection[item.color]) {
+      collection[item.color] = [];
+    }
 
-      collection[item.color].push(item);
+    collection[item.color].push(item);
 
-      return collection;
-    }, {});
+    return collection;
+  }, {});
 }
 
 function concatAll(arr) {

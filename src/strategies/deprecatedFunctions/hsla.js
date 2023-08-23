@@ -8,6 +8,9 @@ const colorHsla = /(hsla?\([\d]{1,3},\s*[\d]{1,3}%,\s*[\d]{1,3}%(,\s*\d?\.?\d+)?
  *  end: number,
  *  color: string
  * }}
+ *
+ * ! unused methods
+ * * replaced by findFn(text) in function.js
  */
 export async function findHsla(text) {
   let match = colorHsla.exec(text);
@@ -21,7 +24,7 @@ export async function findHsla(text) {
     result.push({
       start,
       end,
-      color
+      color,
     });
 
     match = colorHsla.exec(text);

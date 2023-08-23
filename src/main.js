@@ -12,22 +12,19 @@ export function activate(context) {
   config = vscode.workspace.getConfiguration('color-highlight');
 
   context.subscriptions.push(
-
     // vscode.commands.registerCommand('_' + COMMAND_NAME, doHighlight),
-    vscode.commands.registerTextEditorCommand(COMMAND_NAME, runHighlightEditorCommand)
-
+    vscode.commands.registerTextEditorCommand(COMMAND_NAME, runHighlightEditorCommand),
   );
 
   vscode.window.onDidChangeVisibleTextEditors(onOpenEditor, null, context.subscriptions);
-  vscode.workspace
-    .onDidChangeConfiguration(onConfigurationChange, null, context.subscriptions);
+  vscode.workspace.onDidChangeConfiguration(onConfigurationChange, null, context.subscriptions);
 
   onOpenEditor(vscode.window.visibleTextEditors);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {
-  instanceMap.forEach((instance) => instance.dispose());
+  instanceMap.forEach(instance => instance.dispose());
   instanceMap = null;
 }
 
