@@ -2,11 +2,28 @@
 
 # Change Log
 
+## [1.1.2] - 2023-08-23
+
+### Docs
+
+- Updated readme file
+- Fixed version number in change log
+
+## [1.1.1] - 2023-08-23
+
+### Fixed
+
+- named-color should be case-insensitive
+
 ## [1.1.0] - 2023-08-23
+
+### Added
 
 - new extension name
 
 ## [1.0.1] - unreleased
+
+### Added
 
 - new extension icon
 - `rgbWithNoFunctionLanguages` option: default value updated
