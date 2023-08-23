@@ -2,9 +2,13 @@
 
 `Hue show better version`
 
+`v1.0.0-base-2.6.0`
+
 This extension styles css/web colors found in your document.
 
 This particular version is optimized for styling colors in `hsl` and `hwb` formats.
+
+Forked from [enyancc/vscode-ext-color-highlight](https://github.com/enyancc/vscode-ext-color-highlight) [2.6.0](https://github.com/enyancc/vscode-ext-color-highlight/commit/913740fe316bba2bd44b9e15f0461a421f5c382c)
 
 ## Features
 
