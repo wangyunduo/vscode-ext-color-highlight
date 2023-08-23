@@ -3,5 +3,5 @@
   "editor.tabSize": 2,
   "color-highlight.enable": true,
   "eslint.enable": true,
-  "cSpell.words": ["colortranslator", "HEXA", "RGBA", "RRGGBB", "RRGGBBAA"]
+  "cSpell.words": ["AARRGGBB", "argb", "colortranslator", "HEXA", "hwba", "RGBA", "RRGGBB", "RRGGBBAA"]
 }
