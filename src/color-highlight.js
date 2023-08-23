@@ -8,8 +8,6 @@ import { findCssVars, findScssVars, findLessVars, findStylusVars } from './strat
 import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
 
-const styleSheetsLanguages = ['css', 'scss', 'sass', 'less', 'stylus'];
-
 export class DocumentHighlight {
   /**
    * Creates an instance of DocumentHighlight.
@@ -31,7 +29,7 @@ export class DocumentHighlight {
       this.strategies.push(findHexRGBA);
     }
 
-    if (styleSheetsLanguages.indexOf(document.languageId) > -1 || viewConfig.matchWords) {
+    if (viewConfig.matchNamedColorsLanguages.includes(document.languageId)) {
       this.strategies.push(findNamedColor);
     }
 

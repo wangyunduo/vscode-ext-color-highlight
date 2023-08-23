@@ -54,10 +54,17 @@
           "description": "An array of language ids which should be highlighted by Color Highlight. \"*\" to trigger on any language; Prepend language id with \"!\" to exclude the language (i.e \"!typescript\", \"!javascript\")",
           "type": "array"
         },
-        "color-highlight.matchWords": {
-          "default": false,
-          "description": "Highlight color words in all files (grey, green, etc.)",
-          "type": "boolean"
+        "color-highlight.matchNamedColorsLanguages": {
+          "default": [
+            "html",
+            "css",
+            "scss",
+            "sass",
+            "less",
+            "stylus"
+          ],
+          "description": "Highlight named colors (red, green, blue, etc.) in these languages",
+          "type": "array"
         },
         "color-highlight.useARGB": {
           "default": false,
