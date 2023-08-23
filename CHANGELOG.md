@@ -1,9 +1,25 @@
 <!-- markdownlint-disable MD024 -->
+
 # Change Log
 
-## [Unreleased]
+## [1.0.0-base-2.6.0]
 
-## [2.6.0]
+### Added
+
+- Full support the syntax of functions `rbg()`, `hsl()`, `hwb()` in CSS Color Module Level 4.
+  - `rbg()`: [RGB functions](https://www.w3.org/TR/css-color-4/#rgb-functions)
+  - `hsl()`: [HSL Colors](https://www.w3.org/TR/css-color-4/#the-hsl-notation)
+  - `hwb()`: [HWB Colors](https://www.w3.org/TR/css-color-4/#the-hwb-notation)
+- **`markerBackground` option:** Background color for highlighting colors with alpha value less than 1. Use #RGB, #RGBA, #RRGGBB, #RRGGBBAA or `none`.
+- **Dynamic text color:** full support the syntax of functions `rbg()`, `hsl()`, `hwb()` in CSS Color Module Level 4.
+- **`rgbaOnlyLanguages` option:** Language IDs for rgba only. This setting is not affected by the useARGB setting.
+
+### Fixed
+
+- Highlight variables in style sheets
+- ARGB hex formats: support ARGB & AARRGGBB
+
+## [2.6.0] - unreleased
 
 ### Added
 
