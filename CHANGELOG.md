@@ -2,7 +2,7 @@
 
 # Change Log
 
-## [1.0.1-base-2.6.0]
+## [1.0.1]
 
 - new extension icon
 - `rgbWithNoFunctionLanguages` option: default value updated

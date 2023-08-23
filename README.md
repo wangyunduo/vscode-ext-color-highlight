@@ -2,7 +2,7 @@
 
 `Hue show better version`
 
-`v1.0.1-base-2.6.0`
+`v1.0.1`
 
 This extension styles css/web colors found in your document.
 
