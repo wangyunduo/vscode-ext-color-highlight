@@ -2,7 +2,7 @@
   "name": "color-highlight",
   "displayName": "Color Highlight - Hue show better version",
   "description": "Highlight web colors in your editor, optimized for hsl and hwb formats. CSS Color Module Level 4 compliant.",
-  "version": "1.0.0-base-2.6.0",
+  "version": "1.0.1-base-2.6.0",
   "publisher": "Yunduo",
   "license": "GPL-3.0",
   "engines": {
@@ -54,10 +54,17 @@
           "description": "An array of language ids which should be highlighted by Color Highlight. \"*\" to trigger on any language; Prepend language id with \"!\" to exclude the language (i.e \"!typescript\", \"!javascript\")",
           "type": "array"
         },
-        "color-highlight.matchWords": {
-          "default": false,
-          "description": "Highlight color words in all files (grey, green, etc.)",
-          "type": "boolean"
+        "color-highlight.matchNamedColorsLanguages": {
+          "default": [
+            "html",
+            "css",
+            "scss",
+            "sass",
+            "less",
+            "stylus"
+          ],
+          "description": "Language IDs to highlight named colors (red, green, blue, etc.) in these language files.",
+          "type": "array"
         },
         "color-highlight.useARGB": {
           "default": false,
@@ -83,7 +90,13 @@
         },
         "color-highlight.rgbWithNoFunctionLanguages": {
           "default": [
-            "*"
+            "*",
+            "!html",
+            "!css",
+            "!scss",
+            "!sass",
+            "!less",
+            "!stylus"
           ],
           "description": "An array of language ids which should be highlighted by Color Highlight with the rgbWithNoFunction pattern. \"*\" to trigger on any language; Prepend language id with \"!\" to exclude the language (i.e \"!typescript\", \"!javascript\")",
           "type": "array"
