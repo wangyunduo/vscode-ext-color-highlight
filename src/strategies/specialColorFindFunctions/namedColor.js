@@ -4,7 +4,7 @@ const preparedRePart = Object.keys(namedColor)
   .map(color => `\\b${color}\\b`)
   .join('|');
 
-const namedColorPattern = new RegExp('.?(' + preparedRePart + ')(?!-)', 'g');
+const namedColorPattern = new RegExp('.?(' + preparedRePart + ')(?!-)', 'gi');
 
 /**
  * @export
@@ -21,7 +21,7 @@ export async function findNamedColor(text) {
 
   while (match !== null) {
     const firstChar = match[0][0];
-    const matchedColor = match[1];
+    const matchedColor = match[1].toLowerCase();
     const start = match.index + (match[0].length - matchedColor.length);
     const end = namedColorPattern.lastIndex;
 
