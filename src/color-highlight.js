@@ -9,8 +9,6 @@ import { DecorationMap } from './lib/decoration-map';
 import { dirname } from 'path';
 
 const styleSheetsLanguages = ['css', 'scss', 'sass', 'less', 'stylus'];
-// todo users can define it
-const usingRgbaLanguages = ['html', ...styleSheetsLanguages];
 
 export class DocumentHighlight {
   /**
@@ -27,7 +25,7 @@ export class DocumentHighlight {
     this.strategies = getColorFinders();
 
     if (viewConfig.useARGB == true) {
-      if (usingRgbaLanguages.includes(document.languageId)) this.strategies.push(findHexRGBA);
+      if (viewConfig.rgbaOnlyLanguages.includes(document.languageId)) this.strategies.push(findHexRGBA);
       else this.strategies.push(findHexARGB);
     } else {
       this.strategies.push(findHexRGBA);
