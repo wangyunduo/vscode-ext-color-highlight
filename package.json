@@ -69,6 +69,18 @@
           "description": "Highlight rgb without functions like rgb() ('255, 255, 255', [255, 255, 255], '255 255 255', etc.)",
           "type": "boolean"
         },
+        "color-highlight.rgbaOnlyLanguages": {
+          "default": [
+            "html",
+            "css",
+            "scss",
+            "sass",
+            "less",
+            "stylus"
+          ],
+          "description": "Language IDs for rgba only. This setting is not affected by the useARGB setting.",
+          "type": "array"
+        },
         "color-highlight.rgbWithNoFunctionLanguages": {
           "default": [
             "*"
