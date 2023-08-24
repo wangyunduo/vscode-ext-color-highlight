@@ -51,10 +51,10 @@
           "default": [
             "*"
           ],
-          "description": "An array of language ids which should be highlighted by Color Highlight. \"*\" to trigger on any language; Prepend language id with \"!\" to exclude the language (i.e \"!typescript\", \"!javascript\")",
+          "description": "Language IDs to highlight. Use \"*\" to trigger on any language. Add \"!\" before the language ID to exclude that language (e.g. \"!typescript\", \"!javascript\"). All language-related settings of the plugin (i.e. those starting with \"languages\") support \"*\" and \"!\" syntax.",
           "type": "array"
         },
-        "color-highlight.matchNamedColorsLanguages": {
+        "color-highlight.languagesHighlightNamedColors": {
           "default": [
             "html",
             "css",
@@ -63,32 +63,25 @@
             "less",
             "stylus"
           ],
-          "description": "Language IDs to highlight named colors (red, green, blue, etc.) in these language files.",
+          "description": "Language IDs to highlight named colors (red, green, blue, etc.).",
           "type": "array"
         },
-        "color-highlight.useARGB": {
+        "color-highlight.matchArgb": {
           "default": false,
-          "description": "Highlight HEX values using ARGB instead of RGBA (default)",
+          "description": "Matching hex colors in ARGB format.",
           "type": "boolean"
+        },
+        "color-highlight.languagesHighlightArgb": {
+          "default": [],
+          "description": "Language IDs to highlight hex color in ARGB format.",
+          "type": "array"
         },
         "color-highlight.matchRgbWithNoFunction": {
           "default": false,
-          "description": "Highlight rgb without functions like rgb() ('255, 255, 255', [255, 255, 255], '255 255 255', etc.)",
+          "description": "Matching rgb color without using rgb() function (e.g. '255, 255, 255', [100%, 100%, 100%], '255 255 255', etc.)",
           "type": "boolean"
         },
-        "color-highlight.rgbaOnlyLanguages": {
-          "default": [
-            "html",
-            "css",
-            "scss",
-            "sass",
-            "less",
-            "stylus"
-          ],
-          "description": "Language IDs for rgba only. This setting is not affected by the useARGB setting.",
-          "type": "array"
-        },
-        "color-highlight.rgbWithNoFunctionLanguages": {
+        "color-highlight.languagesHighlightRgbWithNoFunction": {
           "default": [
             "*",
             "!html",
@@ -98,8 +91,14 @@
             "!less",
             "!stylus"
           ],
-          "description": "An array of language ids which should be highlighted by Color Highlight with the rgbWithNoFunction pattern. \"*\" to trigger on any language; Prepend language id with \"!\" to exclude the language (i.e \"!typescript\", \"!javascript\")",
+          "description": "Language IDs to highlight rgb color without using the rgb() function",
           "type": "array"
+        },
+        "color-highlight.markerBackground": {
+          "default": "#ffffff",
+          "pattern": "^(none|#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8}))$",
+          "description": "Background color for highlighting colors with alpha value less than 1. Use #RGB, #RGBA, #RRGGBB, #RRGGBBAA or none.",
+          "type": "string"
         },
         "color-highlight.markerType": {
           "default": "background",
@@ -123,12 +122,6 @@
           "default": [],
           "description": "Array of absolute paths to search while perform file lookups.",
           "type": "array"
-        },
-        "color-highlight.markerBackground": {
-          "default": "#ffffff",
-          "pattern": "^(none|#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8}))$",
-          "description": "Background color for highlighting colors with alpha value less than 1. Use #RGB, #RGBA, #RRGGBB, #RRGGBBAA or none.",
-          "type": "string"
         }
       }
     },
