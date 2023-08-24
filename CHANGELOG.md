@@ -2,6 +2,16 @@
 
 # Change Log
 
+## [1.1.3] - 2023-08-24
+
+### Changed
+
+- Feature Contributions: Settings
+
+### Docs
+
+- Updated readme file
+
 ## [1.1.2] - 2023-08-23
 
 ### Docs
