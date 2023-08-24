@@ -22,6 +22,8 @@ export class DocumentHighlight {
     this.document = document;
     this.strategies = getColorFinders();
 
+    // todo: update useARGB implementation strategy, use one option only
+    // todo: update the order of properties in package.json file
     if (viewConfig.useARGB == true) {
       if (viewConfig.rgbaOnlyLanguages.includes(document.languageId)) this.strategies.push(findHexRGBA);
       else this.strategies.push(findHexARGB);
