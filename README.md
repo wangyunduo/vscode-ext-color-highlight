@@ -1,8 +1,6 @@
 # [vscode-ext-color-highlight-css-color-4](https://github.com/wangyunduo/vscode-ext-color-highlight)
 
-`Hue show better version`
-
-`v1.1.2`
+`Hue show better version` `v1.1.3`
 
 This extension styles css/web colors found in your document.
 
@@ -31,11 +29,33 @@ This extension styles css/web colors found in your document.
   - Full support the syntax of functions `rbg()`, `hsl()`, `hwb()` in CSS Color Module Level 4.
   - Support hex colors and variables in style sheets.
 
+## Compared with Color Highlight
+
+| Features                                                     | [Hue show better version](https://marketplace.visualstudio.com/items?itemName=Yunduo.color-highlight-css-color-4) | [Color Highlight](https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight) | Color Highlight [v2.6.0](https://github.com/enyancc/vscode-ext-color-highlight/commit/913740fe316bba2bd44b9e15f0461a421f5c382c) (unreleased) |
+| :----------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rgb()`, `hsl()`, `hwb()` syntax in CSS Color Module Level 4 | ✅ Fully supported                                                                                                | Not supported                                                                                  | Partially supported                                                                                                                          |
+| Hex colors in ARGB format                                    | ✅ Supported ARGB and AARRGGBB                                                                                    | Not supported                                                                                  | Supported AARRGGBB only                                                                                                                      |
+| Variables in style sheets                                    | ✅ Supported all color formats that can be highlighted                                                            | Supported hex color only                                                                       | Supported hex color only                                                                                                                     |
+| Background color for highlighting colors with transparency   | ✅ Supported                                                                                                      | Not supported                                                                                  | Not supported                                                                                                                                |
+| Dynamic text color                                           | ✅ Supported all color formats that can be highlighted                                                            | Supported partial hex and rgb colors only                                                      | Supported partial hex and rgb colors only                                                                                                    |
+
 ## Install
 
 In VSC press Ctrl+Shift+P (Cmd+Shift+P on Mac) then type ">ext install", hit enter, search "Color Highlight".
 
 Still confused? Click "Get Started" above.
+
+## Useful settings
+
+| ID                                                    | Description                                                                                                      |
+| :---------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| `color-highlight.languagesHighlightNamedColors`       | Language IDs to highlight named colors (red, green, blue, etc.).                                                 |
+| `color-highlight.matchArgb`                           | Matching hex colors in ARGB format.                                                                              |
+| `color-highlight.languagesHighlightArgb`              | Language IDs to highlight hex color in ARGB format.                                                              |
+| `color-highlight.matchRgbWithNoFunction`              | Matching rgb color without using rgb() function (e.g. '255, 255, 255', [100%, 100%, 100%], '255 255 255', etc.). |
+| `color-highlight.languagesHighlightRgbWithNoFunction` | Language IDs to highlight rgb color without using the rgb() function                                             |
+| `color-highlight.markerBackground`                    | Background color for highlighting colors with alpha value less than 1.                                           |
+| `color-highlight.markerType`                          | Style of the highlight. Can be `dot-before`, `dot-after`, `foreground`, `background`, `outline`, `underline`.    |
 
 ## Develop
 

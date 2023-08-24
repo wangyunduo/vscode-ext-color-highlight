@@ -22,33 +22,22 @@ export class DocumentHighlight {
     this.document = document;
     this.strategies = getColorFinders();
 
-    if (viewConfig.useARGB == true) {
-      if (viewConfig.rgbaOnlyLanguages.includes(document.languageId)) this.strategies.push(findHexRGBA);
-      else this.strategies.push(findHexARGB);
+    if (isValid(viewConfig.languagesHighlightNamedColors, document.languageId)) {
+      this.strategies.push(findNamedColor);
+    }
+
+    if (viewConfig.matchArgb) {
+      if (isValid(viewConfig.languagesHighlightArgb, document.languageId)) {
+        this.strategies.push(findHexARGB);
+      } else this.strategies.push(findHexRGBA);
     } else {
       this.strategies.push(findHexRGBA);
     }
 
-    if (viewConfig.matchNamedColorsLanguages.includes(document.languageId)) {
-      this.strategies.push(findNamedColor);
-    }
-
     if (viewConfig.matchRgbWithNoFunction) {
-      let isValid = false;
-
-      if (viewConfig.rgbWithNoFunctionLanguages.indexOf('*') > -1) {
-        isValid = true;
+      if (isValid(viewConfig.languagesHighlightRgbWithNoFunction, document.languageId)) {
+        this.strategies.push(...getRgbNoFnFinders());
       }
-
-      if (viewConfig.rgbWithNoFunctionLanguages.indexOf(document.languageId) > -1) {
-        isValid = true;
-      }
-
-      if (viewConfig.rgbWithNoFunctionLanguages.indexOf(`!${document.languageId}`) > -1) {
-        isValid = false;
-      }
-
-      if (isValid) this.strategies.push(...getRgbNoFnFinders());
     }
 
     switch (document.languageId) {
@@ -171,4 +160,17 @@ function groupByColor(results) {
 
 function concatAll(arr) {
   return arr.reduce((result, item) => result.concat(item), []);
+}
+
+function isValid(languageIdsArray, languageId) {
+  if (languageIdsArray.includes(languageId)) {
+    return true;
+  }
+  if (languageIdsArray.includes(`!${languageId}`)) {
+    return false;
+  }
+  if (languageIdsArray.includes('*')) {
+    return true;
+  }
+  return false;
 }
